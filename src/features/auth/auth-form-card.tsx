@@ -1,10 +1,13 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -50,6 +53,8 @@ const content = {
 };
 
 export function AuthFormCard({ mode }: AuthFormCardProps) {
+  const router = useRouter();
+  const { loginMutation, signupMutation } = useAuthSession();
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -61,6 +66,22 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
   });
 
   const ui = content[mode];
+  const authMutation = mode === "sign-up" ? signupMutation : loginMutation;
+
+  async function onSubmit(values: AuthFormValues) {
+    if (mode === "forgot-password") {
+      return;
+    }
+
+    await authMutation.mutateAsync({
+      email: values.email,
+      password: values.password,
+      name: mode === "sign-up" ? values.name : undefined,
+    });
+
+    router.push("/dashboard");
+    router.refresh();
+  }
 
   return (
     <Card className="w-full rounded-[2rem] border-border/70 shadow-sm">
@@ -69,7 +90,7 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
         <CardDescription className="text-sm leading-6">{ui.description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-5" onSubmit={form.handleSubmit(() => undefined)}>
+        <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
           {mode === "sign-up" ? (
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
@@ -98,8 +119,20 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
               />
             </div>
           ) : null}
-          <Button type="submit" className="w-full">
-            {ui.action}
+          {authMutation.isError ? (
+            <p className="text-sm text-rose-600">
+              {(authMutation.error as Error).message || "Authentication failed."}
+            </p>
+          ) : null}
+          <Button type="submit" className="w-full" disabled={authMutation.isPending && mode !== "forgot-password"}>
+            {authMutation.isPending && mode !== "forgot-password" ? (
+              <>
+                <LoaderCircle className="size-4 animate-spin" />
+                Working...
+              </>
+            ) : (
+              ui.action
+            )}
           </Button>
           <div className="flex flex-wrap justify-between gap-3 text-sm text-muted-foreground">
             <Link href="/guest-links" className="hover:text-foreground">

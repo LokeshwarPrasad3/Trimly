@@ -1,5 +1,17 @@
-import { AppShell } from "@/components/dashboard/app-shell";
+﻿import { redirect } from "next/navigation";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <AppShell>{children}</AppShell>;
+import { AppShell } from "@/components/dashboard/app-shell";
+import { getCurrentUserFromCookie } from "@/server/auth/session";
+import { userService } from "@/server/services/user-service";
+
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const user = await getCurrentUserFromCookie();
+
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  const currentUser = await userService.getUserById(user.id);
+
+  return <AppShell currentUser={currentUser}>{children}</AppShell>;
 }

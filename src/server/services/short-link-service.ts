@@ -34,6 +34,15 @@ export const shortLinkService = {
     return shortLinkRepository.listByGuestIdentityId(guestIdentity.id);
   },
 
+  async listAuthenticatedShortLinks(userId: string) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new AppError(404, "USER_NOT_FOUND", "The requested user was not found.");
+    }
+
+    return shortLinkRepository.listByUserId(userId);
+  },
+
   async createShortLink(input: CreateShortLinkRequest) {
     const payload = createShortLinkRequestSchema.parse(input);
     const slug = normalizeSlug(payload.slug);
@@ -90,6 +99,16 @@ export const shortLinkService = {
     return shortLink;
   },
 
+  async getAuthenticatedShortLinkById(id: string, userId: string) {
+    const shortLink = await shortLinkService.getShortLinkById(id);
+
+    if (shortLink.userId !== userId) {
+      throw new AppError(403, "FORBIDDEN", "You do not have access to this short link.");
+    }
+
+    return shortLink;
+  },
+
   async getShortLinkBySlug(slug: string) {
     const shortLink = await shortLinkRepository.findBySlug(normalizeSlug(slug));
     if (!shortLink) {
@@ -122,6 +141,11 @@ export const shortLinkService = {
     });
   },
 
+  async updateAuthenticatedShortLink(id: string, userId: string, input: UpdateShortLinkRequest) {
+    const currentLink = await shortLinkService.getAuthenticatedShortLinkById(id, userId);
+    return shortLinkService.updateShortLink(currentLink.id, input);
+  },
+
   async deleteShortLink(id: string) {
     const currentLink = await shortLinkRepository.findById(id);
     if (!currentLink) {
@@ -131,5 +155,10 @@ export const shortLinkService = {
     await shortLinkRepository.delete(id);
 
     return { id };
+  },
+
+  async deleteAuthenticatedShortLink(id: string, userId: string) {
+    const currentLink = await shortLinkService.getAuthenticatedShortLinkById(id, userId);
+    return shortLinkService.deleteShortLink(currentLink.id);
   },
 };

@@ -2,12 +2,14 @@
 import { z } from "zod";
 
 import { createClickEventRequestSchema } from "@/lib/validations/click-event";
+import { requireCurrentUserFromCookie } from "@/server/auth/session";
 import { parseJsonBody } from "@/server/http/requests";
 import { apiSuccess } from "@/server/http/responses";
 import { clickEventService } from "@/server/services/click-event-service";
 
 export async function listClickEventsController(shortLinkId: string) {
-  const clickEvents = await clickEventService.listClickEvents(z.string().cuid().parse(shortLinkId));
+  const currentUser = await requireCurrentUserFromCookie();
+  const clickEvents = await clickEventService.listClickEvents(z.string().cuid().parse(shortLinkId), currentUser.id);
   return apiSuccess(clickEvents);
 }
 

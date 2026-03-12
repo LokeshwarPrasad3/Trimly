@@ -4,11 +4,15 @@ import { clickEventRepository } from "@/server/repositories/click-event-reposito
 import { shortLinkRepository } from "@/server/repositories/short-link-repository";
 
 export const clickEventService = {
-  async listClickEvents(shortLinkId: string) {
+  async listClickEvents(shortLinkId: string, userId: string) {
     const shortLink = await shortLinkRepository.findById(shortLinkId);
 
     if (!shortLink) {
       throw new AppError(404, "SHORT_LINK_NOT_FOUND", "The short link was not found.");
+    }
+
+    if (shortLink.userId !== userId) {
+      throw new AppError(403, "FORBIDDEN", "You do not have access to this short link.");
     }
 
     return clickEventRepository.listByShortLinkId(shortLinkId);

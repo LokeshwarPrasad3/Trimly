@@ -1,14 +1,14 @@
 ﻿import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { createUserController } from "@/server/controllers/user-controller";
+import { loginUserController } from "@/server/controllers/user-controller";
 import { AUTH_COOKIE_NAME } from "@/server/auth/constants";
 import { apiError } from "@/server/http/responses";
 import { sessionService } from "@/server/services/session-service";
 
 export async function POST(request: NextRequest) {
   try {
-    const response = await createUserController(request);
+    const response = await loginUserController(request);
     const body = await response.json();
     const session = await sessionService.createSession(body.data.id);
     const nextResponse = NextResponse.json(body, { status: response.status });

@@ -4,17 +4,24 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { DashboardUserMenu } from "@/features/auth/components/dashboard-user-menu";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { appName, dashboardNav, profileSummary } from "@/lib/mock-data";
+import { appName, dashboardNav } from "@/lib/mock-data";
+import { type PublicUser } from "@/lib/validations/user";
 import { cn } from "@/lib/utils";
 
 type AppShellProps = {
   children: React.ReactNode;
+  currentUser: PublicUser;
 };
 
-function SidebarContent() {
+type SidebarContentProps = {
+  currentUser: PublicUser;
+};
+
+function SidebarContent({ currentUser }: SidebarContentProps) {
   const pathname = usePathname();
 
   return (
@@ -49,35 +56,40 @@ function SidebarContent() {
         })}
       </nav>
       <div className="mt-auto rounded-[1.5rem] bg-gradient-to-r from-slate-950 to-sky-700 p-4 text-white">
-        <p className="text-sm font-semibold">{profileSummary.name}</p>
-        <p className="text-sm text-sky-100">{profileSummary.plan} workspace</p>
+        <p className="text-sm font-semibold">{currentUser.name ?? "Blink user"}</p>
+        <p className="text-sm text-sky-100">Forever free workspace</p>
       </div>
     </div>
   );
 }
 
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children, currentUser }: AppShellProps) {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_28%),linear-gradient(180deg,_#eff6ff_0%,_#f8fafc_55%,_#ffffff_100%)]">
       <div className="mx-auto flex min-h-screen max-w-[1600px] gap-6 px-4 py-4 sm:px-6">
         <aside className="hidden w-72 shrink-0 rounded-[2rem] border border-white/60 bg-white/65 p-4 shadow-[0_30px_70px_-45px_rgba(15,23,42,0.4)] backdrop-blur-xl lg:block">
-          <SidebarContent />
+          <SidebarContent currentUser={currentUser} />
         </aside>
         <div className="flex min-w-0 flex-1 flex-col">
-          <div className="mb-4 flex items-center justify-between rounded-[1.75rem] border border-white/60 bg-white/70 px-4 py-3 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.35)] backdrop-blur-xl lg:px-6">
+          <div className="mb-4 flex items-center justify-between gap-4 rounded-[1.75rem] border border-white/60 bg-white/70 px-4 py-3 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.35)] backdrop-blur-xl lg:px-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">Analytics workspace</p>
               <p className="text-sm text-slate-500">Modern logged-in area with charts, links, and profile screens</p>
             </div>
-            <Sheet>
-              <SheetTrigger render={<Button variant="outline" size="sm" className="lg:hidden" />}>
-                <Menu className="size-4" />
-                Menu
-              </SheetTrigger>
-              <SheetContent side="left" className="w-80">
-                <SidebarContent />
-              </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-3">
+              <div className="lg:hidden">
+                <Sheet>
+                  <SheetTrigger render={<Button variant="outline" size="sm" />}>
+                    <Menu className="size-4" />
+                    Menu
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-80">
+                    <SidebarContent currentUser={currentUser} />
+                  </SheetContent>
+                </Sheet>
+              </div>
+              <DashboardUserMenu user={currentUser} />
+            </div>
           </div>
           <main className="min-w-0 flex-1">{children}</main>
         </div>
