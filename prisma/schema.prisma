@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum LinkStatus {
+  ACTIVE
+  DISABLED
+  EXPIRED
+}
+
+enum GuestIdentityStatus {
+  ACTIVE
+  CLAIMED
+  EXPIRED
+}
+
+model User {
+  id                   String          @id @default(cuid())
+  email                String          @unique
+  name                 String?
+  passwordHash         String
+  imageUrl             String?
+  isActive             Boolean         @default(true)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  shortLinks           ShortLink[]
+  claimedGuestIdentity GuestIdentity[] @relation("ClaimedGuestIdentities")
+
+  @@index([createdAt])
+}
+
+model GuestIdentity {
+  id              String              @id @default(cuid())
+  token           String              @unique
+  status          GuestIdentityStatus @default(ACTIVE)
+  claimedByUserId String?
+  expiresAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  claimedByUser   User?               @relation("ClaimedGuestIdentities", fields: [claimedByUserId], references: [id], onDelete: SetNull)
+  shortLinks      ShortLink[]
+
+  @@index([status])
+  @@index([claimedByUserId])
+}
+
+model ShortLink {
+  id              String         @id @default(cuid())
+  title           String?
+  slug            String         @unique
+  originalUrl     String
+  status          LinkStatus     @default(ACTIVE)
+  clickCount      Int            @default(0)
+  lastClickedAt   DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  userId          String?
+  guestIdentityId String?
+  user            User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  guestIdentity   GuestIdentity? @relation(fields: [guestIdentityId], references: [id], onDelete: SetNull)
+  clickEvents     ClickEvent[]
+
+  @@index([userId, createdAt])
+  @@index([guestIdentityId, createdAt])
+  @@index([status])
+}
+
+model ClickEvent {
+  id          String    @id @default(cuid())
+  shortLinkId String
+  clickedAt   DateTime  @default(now())
+  ipHash      String?
+  userAgent   String?
+  referer     String?
+  country     String?
+  city        String?
+  deviceType  String?
+  browser     String?
+  os          String?
+  isBot       Boolean   @default(false)
+  shortLink   ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
+
+  @@index([shortLinkId, clickedAt])
+}
