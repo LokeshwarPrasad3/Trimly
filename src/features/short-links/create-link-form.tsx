@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCreateAuthenticatedLink } from "@/features/short-links/hooks/use-short-links";
 import { createAuthenticatedLinkSchema, type CreateAuthenticatedLinkInput } from "@/lib/api/links";
+import { getShortLinkUrl } from "@/lib/short-url";
 
 export function CreateLinkForm() {
   const router = useRouter();
@@ -79,7 +80,7 @@ export function CreateLinkForm() {
               </div>
               <div>
                 <p className="font-medium text-slate-950">Preview</p>
-                <p className="mt-1 text-sm text-slate-600">Your short URL will look like `blink.new/{slug || "your-slug"}`</p>
+                <p className="mt-1 text-sm text-slate-600">Your short URL will look like <span className="font-medium text-slate-950">{getShortLinkUrl(slug || "your-slug")}</span></p>
               </div>
             </div>
           </div>

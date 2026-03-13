@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   createGuestIdentity,
@@ -20,6 +20,7 @@ const guestKeys = {
 
 export function useGuestSession() {
   const [token, setTokenState] = useState<string | null>(() => getGuestToken());
+  const hasAttemptedCreationRef = useRef(false);
   const queryClient = useQueryClient();
 
   const createGuestMutation = useMutation({
@@ -32,12 +33,14 @@ export function useGuestSession() {
   });
 
   useEffect(() => {
-    if (token || createGuestMutation.isPending || createGuestMutation.isSuccess) {
+    if (token || hasAttemptedCreationRef.current) {
       return;
     }
 
+    hasAttemptedCreationRef.current = true;
     createGuestMutation.mutate();
-  }, [createGuestMutation, token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]); // intentionally omit createGuestMutation — it's a new ref each render
 
   const identityQuery = useQuery({
     queryKey: token ? guestKeys.identity(token) : guestKeys.token,
@@ -52,7 +55,13 @@ export function useGuestSession() {
   });
 
   const createLinkMutation = useMutation({
-    mutationFn: (input: CreateGuestLinkInput) => createGuestShortLink(token!, input),
+    mutationFn: (input: CreateGuestLinkInput) => {
+      if (!token) {
+        throw new Error("Guest workspace is not ready yet.");
+      }
+
+      return createGuestShortLink(token, input);
+    },
     onSuccess: async () => {
       if (!token) {
         return;
@@ -70,7 +79,8 @@ export function useGuestSession() {
     identityQuery,
     linksQuery,
     createLinkMutation,
-    isInitializing: createGuestMutation.isPending || (!token && !createGuestMutation.isError),
+    isInitializing: createGuestMutation.isPending || (!token && createGuestMutation.isIdle && !createGuestMutation.isError),
     initializationError: createGuestMutation.error,
   };
 }
+

@@ -6,8 +6,9 @@ import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { buildActivityFromLinks, formatClickEventLabel, getLinkHost } from "@/features/dashboard/lib/analytics";
 import { useAuthenticatedClickEvents, useAuthenticatedLink } from "@/features/short-links/hooks/use-short-links";
-import { buildActivityFromLinks, getLinkHost } from "@/features/dashboard/lib/analytics";
+import { getShortLinkUrl } from "@/lib/short-url";
 
 type LinkDetailClientProps = {
   id: string;
@@ -70,7 +71,7 @@ export function LinkDetailClient({ id }: LinkDetailClientProps) {
         <CardContent className="space-y-6 text-sm">
           <div className="rounded-2xl bg-slate-50/80 p-5">
             <p className="text-slate-500">Short URL</p>
-            <p className="mt-2 font-semibold text-slate-950">blink.new/{link.slug}</p>
+            <p className="mt-2 break-all font-semibold text-slate-950">{getShortLinkUrl(link.slug)}</p>
           </div>
           <div className="rounded-2xl bg-slate-50/80 p-5">
             <p className="text-slate-500">Destination</p>
@@ -101,7 +102,7 @@ export function LinkDetailClient({ id }: LinkDetailClientProps) {
               ) : (
                 clickEvents.slice(0, 5).map((event) => (
                   <div key={event.id} className="rounded-2xl bg-slate-50/80 px-4 py-3">
-                    <p className="font-medium text-slate-950">{event.city ?? "Unknown city"}, {event.country ?? "Unknown country"}</p>
+                    <p className="font-medium text-slate-950">{formatClickEventLabel(event)}</p>
                     <p className="mt-1 text-sm text-slate-500">{new Date(event.clickedAt).toLocaleString()}</p>
                   </div>
                 ))

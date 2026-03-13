@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, ArrowRight, CheckCircle2, Link2, LoaderCircle } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle2, CheckIcon, Copy, LoaderCircle } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -10,8 +11,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createSlugFromUrl } from "@/features/guest/lib/slug";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useGuestSession } from "@/features/guest/hooks/use-guest-session";
+import { createSlugFromUrl } from "@/features/guest/lib/slug";
+import { getShortLinkUrl } from "@/lib/short-url";
 import { linkButtonClass } from "@/lib/ui";
 
 const guestLinkFormSchema = z.object({
@@ -22,6 +25,7 @@ type GuestLinkFormValues = z.infer<typeof guestLinkFormSchema>;
 
 export function GuestLinksClient() {
   const { token, identityQuery, linksQuery, createLinkMutation, isInitializing, initializationError } = useGuestSession();
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
   const form = useForm<GuestLinkFormValues>({
     resolver: zodResolver(guestLinkFormSchema),
     defaultValues: {
@@ -40,6 +44,16 @@ export function GuestLinksClient() {
 
     form.reset();
   });
+
+  async function handleCopy(linkId: string, slug: string) {
+    const shortUrl = getShortLinkUrl(slug);
+    await navigator.clipboard.writeText(shortUrl);
+    setCopiedLinkId(linkId);
+
+    window.setTimeout(() => {
+      setCopiedLinkId((current) => (current === linkId ? null : current));
+    }, 1600);
+  }
 
   if (isInitializing) {
     return (
@@ -107,7 +121,7 @@ export function GuestLinksClient() {
 
         <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[2rem] border border-border/70 bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-xl font-semibold text-foreground">Your guest links</h2>
                 <p className="text-sm text-muted-foreground">
@@ -120,15 +134,26 @@ export function GuestLinksClient() {
             </div>
             <div className="mt-5 space-y-3">
               {guestLinks.length > 0 ? (
-                guestLinks.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between rounded-[1.25rem] border border-border/70 bg-slate-50 px-4 py-3">
-                    <div className="min-w-0">
-                      <p className="font-medium text-foreground">blink.new/{item.slug}</p>
-                      <p className="truncate text-sm text-muted-foreground">{item.originalUrl}</p>
+                guestLinks.map((item) => {
+                  const shortUrl = getShortLinkUrl(item.slug);
+                  const isCopied = copiedLinkId === item.id;
+
+                  return (
+                    <div key={item.id} className="grid gap-3 rounded-[1.25rem] border border-border/70 bg-slate-50 px-4 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                      <div className="min-w-0">
+                        <p className="break-all font-medium text-foreground">{shortUrl}</p>
+                        <p className="mt-1 truncate text-sm text-muted-foreground">{item.originalUrl}</p>
+                      </div>
+                      <Tooltip>
+                        <TooltipTrigger render={<Button type="button" variant="outline" size="sm" />} onClick={() => handleCopy(item.id, item.slug)}>
+                          {isCopied ? <CheckIcon className="size-4 text-emerald-600" /> : <Copy className="size-4" />}
+                          {isCopied ? "Copied" : "Copy"}
+                        </TooltipTrigger>
+                        <TooltipContent>{isCopied ? "Copied to clipboard" : "Copy short URL"}</TooltipContent>
+                      </Tooltip>
                     </div>
-                    <Link2 className="size-4 text-sky-700" />
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <div className="rounded-[1.25rem] border border-dashed border-border bg-slate-50 px-4 py-6 text-sm text-muted-foreground">
                   No guest links yet. Paste a URL above to create your first short link.

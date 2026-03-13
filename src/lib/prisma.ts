@@ -1,5 +1,6 @@
-﻿import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/generated/prisma/client";
 
 declare global {
   var prisma: PrismaClient | undefined;
@@ -11,7 +12,8 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is not configured.");
 }
 
-const adapter = new PrismaPg({ connectionString });
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
 
 export const prisma =
   global.prisma ??

@@ -11,8 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ApiShortLink } from "@/lib/api/links";
 import { getLinkHost } from "@/features/dashboard/lib/analytics";
+import type { ApiShortLink } from "@/lib/api/links";
+import { getShortLinkUrl } from "@/lib/short-url";
 
 const statusClassName: Record<ApiShortLink["status"], string> = {
   ACTIVE: "bg-emerald-50 text-emerald-700 hover:bg-emerald-50",
@@ -90,7 +91,7 @@ export function LinksTable({
                       <Link href={`/dashboard/links/${link.id}`} className="font-semibold text-slate-950 hover:text-sky-700 hover:underline">
                         {link.title ?? link.slug}
                       </Link>
-                      <p className="text-sm text-slate-500">blink.new/{link.slug}</p>
+                      <p className="text-sm text-slate-500">{getShortLinkUrl(link.slug)}</p>
                     </div>
                   </TableCell>
                   <TableCell>

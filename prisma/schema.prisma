@@ -1,21 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-enum LinkStatus {
-  ACTIVE
-  DISABLED
-  EXPIRED
-}
-
-enum GuestIdentityStatus {
-  ACTIVE
-  CLAIMED
-  EXPIRED
 }
 
 model User {
@@ -27,9 +16,9 @@ model User {
   isActive             Boolean         @default(true)
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
-  shortLinks           ShortLink[]
-  sessions             Session[]
   claimedGuestIdentity GuestIdentity[] @relation("ClaimedGuestIdentities")
+  sessions             Session[]
+  shortLinks           ShortLink[]
 
   @@index([createdAt])
 }
@@ -54,7 +43,7 @@ model GuestIdentity {
   expiresAt       DateTime?
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
-  claimedByUser   User?               @relation("ClaimedGuestIdentities", fields: [claimedByUserId], references: [id], onDelete: SetNull)
+  claimedByUser   User?               @relation("ClaimedGuestIdentities", fields: [claimedByUserId], references: [id])
   shortLinks      ShortLink[]
 
   @@index([status])
@@ -74,9 +63,9 @@ model ShortLink {
   updatedAt       DateTime       @updatedAt
   userId          String?
   guestIdentityId String?
-  user            User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
-  guestIdentity   GuestIdentity? @relation(fields: [guestIdentityId], references: [id], onDelete: SetNull)
   clickEvents     ClickEvent[]
+  guestIdentity   GuestIdentity? @relation(fields: [guestIdentityId], references: [id])
+  user            User?          @relation(fields: [userId], references: [id])
 
   @@index([userId, createdAt])
   @@index([guestIdentityId, createdAt])
@@ -99,4 +88,16 @@ model ClickEvent {
   shortLink   ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
 
   @@index([shortLinkId, clickedAt])
+}
+
+enum LinkStatus {
+  ACTIVE
+  DISABLED
+  EXPIRED
+}
+
+enum GuestIdentityStatus {
+  ACTIVE
+  CLAIMED
+  EXPIRED
 }

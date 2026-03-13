@@ -8,6 +8,20 @@ export function getLinkHost(url: string) {
   }
 }
 
+export function formatClickEventLabel(event: ApiClickEvent) {
+  const place = [event.city, event.country].filter(Boolean).join(", ");
+
+  if (place) {
+    return place;
+  }
+
+  const ipLabel = event.ipHash ? `IP ${event.ipHash}` : null;
+  const agentLabel = [event.browser, event.os].filter(Boolean).join(" on ");
+  const deviceLabel = event.deviceType ? `${event.deviceType} device` : null;
+
+  return [ipLabel, agentLabel, deviceLabel].filter(Boolean).join(" | ") || "Direct visit";
+}
+
 export function buildDashboardMetrics(links: ApiShortLink[]) {
   const totalClicks = links.reduce((sum, link) => sum + link.clickCount, 0);
   const activeLinks = links.filter((link) => link.status === "ACTIVE").length;
@@ -18,7 +32,11 @@ export function buildDashboardMetrics(links: ApiShortLink[]) {
     { label: "Total clicks", value: totalClicks.toLocaleString(), change: `${links.length} links` },
     { label: "Active links", value: activeLinks.toString(), change: `${links.length - activeLinks} inactive` },
     { label: "Average clicks", value: averageClicks.toLocaleString(), change: "per link" },
-    { label: "Latest update", value: lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "No links", change: "workspace" },
+    {
+      label: "Latest update",
+      value: lastUpdated ? new Date(lastUpdated).toLocaleDateString() : "No links",
+      change: "workspace",
+    },
   ];
 }
 
@@ -62,8 +80,8 @@ export function buildActivityFromLinks(links: ApiShortLink[], clickEvents: ApiCl
   }));
 
   const clickItems = clickEvents.slice(0, 2).map((event) => ({
-    title: `New click recorded`,
-    description: `${event.city ?? "Unknown city"}, ${event.country ?? "Unknown country"}`,
+    title: "New click recorded",
+    description: formatClickEventLabel(event),
     time: new Date(event.clickedAt).toLocaleString(),
   }));
 
