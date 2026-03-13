@@ -200,7 +200,7 @@ export const activityFeed = [
 ];
 
 export const profileSummary = {
-  name: "Lokeshwar Rao",
+  name: "Lokeshwar Dewangan",
   role: "Product builder",
   email: "lokeshwar@example.com",
   location: "Bengaluru, India",

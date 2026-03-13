@@ -27,7 +27,7 @@ export function AnalyticsPageClient() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-700">Analytics</p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-950">Live workspace analytics for authenticated users.</h1>
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">Live workspace analytics for authenticated users.</h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
               This page now reads your real links and click events instead of mocked chart data.
             </p>

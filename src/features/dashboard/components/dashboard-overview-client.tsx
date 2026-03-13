@@ -24,7 +24,7 @@ export function DashboardOverviewClient() {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-700">Dashboard</p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950">Your links, clicks, and recent activity in one clean workspace.</h1>
+            <h1 className="mt-3 max-w-3xl text-2xl font-semibold tracking-tight text-slate-950">Your links, clicks, and recent activity in one clean workspace.</h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
               The dashboard now reads from live authenticated APIs, so the overview reflects the signed-in user instead of mocked data.
             </p>

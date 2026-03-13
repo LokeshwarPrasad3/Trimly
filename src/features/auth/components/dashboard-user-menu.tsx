@@ -30,7 +30,7 @@ export function DashboardUserMenu({ user }: DashboardUserMenuProps) {
     .toUpperCase() || user.email.slice(0, 2).toUpperCase();
 
   return (
-    <div className="flex items-center gap-3 rounded-[1.25rem] bg-white/80 px-3 py-2 shadow-sm">
+    <div className="flex items-center gap-3 rounded-[1.25rem] bg-white/80 px-3 py-2">
       <Avatar className="size-10 rounded-2xl bg-sky-100">
         <AvatarFallback className="rounded-2xl bg-sky-100 text-sky-700">{initials}</AvatarFallback>
       </Avatar>
@@ -38,7 +38,7 @@ export function DashboardUserMenu({ user }: DashboardUserMenuProps) {
         <p className="truncate text-sm font-semibold text-slate-950">{user.name ?? "Blink user"}</p>
         <p className="truncate text-xs text-slate-500">{user.email}</p>
       </div>
-      <Button variant="ghost" size="sm" onClick={handleLogout} disabled={logoutMutation.isPending}>
+      <Button variant="ghost" className="py-4" size="sm" onClick={handleLogout} disabled={logoutMutation.isPending}>
         <LogOut className="size-4" />
         {logoutMutation.isPending ? "Signing out..." : "Logout"}
       </Button>

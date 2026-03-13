@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { CheckIcon, Copy } from "lucide-react";
+import { useState } from "react";
 
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { buildActivityFromLinks, formatClickEventLabel, getLinkHost } from "@/features/dashboard/lib/analytics";
@@ -21,8 +24,18 @@ const statusClassName = {
 };
 
 export function LinkDetailClient({ id }: LinkDetailClientProps) {
+  const [copied, setCopied] = useState(false);
   const { data: link, isLoading: isLinkLoading, error } = useAuthenticatedLink(id);
   const { data: clickEvents = [], isLoading: isEventsLoading } = useAuthenticatedClickEvents(id);
+
+  async function handleCopy(shortUrl: string) {
+    await navigator.clipboard.writeText(shortUrl);
+    setCopied(true);
+
+    window.setTimeout(() => {
+      setCopied(false);
+    }, 1600);
+  }
 
   if (isLinkLoading) {
     return (
@@ -55,6 +68,7 @@ export function LinkDetailClient({ id }: LinkDetailClientProps) {
   }
 
   const activityItems = buildActivityFromLinks([link], clickEvents);
+  const shortUrl = getShortLinkUrl(link.slug);
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
@@ -70,8 +84,16 @@ export function LinkDetailClient({ id }: LinkDetailClientProps) {
         </CardHeader>
         <CardContent className="space-y-6 text-sm">
           <div className="rounded-2xl bg-slate-50/80 p-5">
-            <p className="text-slate-500">Short URL</p>
-            <p className="mt-2 break-all font-semibold text-slate-950">{getShortLinkUrl(link.slug)}</p>
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <p className="text-slate-500">Short URL</p>
+                <p className="mt-2 break-all font-semibold text-slate-950">{shortUrl}</p>
+              </div>
+              <Button type="button" variant="outline" size="sm" className="shrink-0" onClick={() => handleCopy(shortUrl)}>
+                {copied ? <CheckIcon className="size-4 text-emerald-600" /> : <Copy className="size-4" />}
+                {copied ? "Copied" : "Copy"}
+              </Button>
+            </div>
           </div>
           <div className="rounded-2xl bg-slate-50/80 p-5">
             <p className="text-slate-500">Destination</p>

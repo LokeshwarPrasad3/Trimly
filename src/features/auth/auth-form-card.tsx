@@ -160,8 +160,12 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
         </div>
       </div>
       <CardHeader className="space-y-3 px-6 pt-6">
-        <CardTitle className="text-3xl tracking-tight text-slate-950">{ui.title}</CardTitle>
-        <CardDescription className="text-sm leading-6 text-slate-600">{ui.description}</CardDescription>
+        <CardTitle className="text-3xl tracking-tight text-slate-950">
+          {ui.title}
+        </CardTitle>
+        <CardDescription className="text-sm leading-6 text-slate-600">
+          {ui.description}
+        </CardDescription>
       </CardHeader>
       <CardContent className="px-6 pb-6">
         <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
@@ -170,11 +174,15 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
               <Label htmlFor="name">Full name</Label>
               <Input
                 id="name"
-                placeholder="Lokeshwar Rao"
+                placeholder="Lokeshwar Dewangan"
                 className="h-11 rounded-xl bg-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                 {...form.register("name")}
               />
-              <p className="text-xs text-rose-600">{"name" in form.formState.errors ? form.formState.errors.name?.message : " "}</p>
+              <p className="text-xs text-rose-600">
+                {"name" in form.formState.errors
+                  ? form.formState.errors.name?.message
+                  : " "}
+              </p>
             </div>
           ) : null}
 
@@ -186,7 +194,9 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
               className="h-11 rounded-xl bg-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
               {...form.register("email")}
             />
-            <p className="text-xs text-rose-600">{form.formState.errors.email?.message ?? " "}</p>
+            <p className="text-xs text-rose-600">
+              {form.formState.errors.email?.message ?? " "}
+            </p>
           </div>
 
           {mode !== "forgot-password" ? (
@@ -194,7 +204,9 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
               <div className="flex items-center justify-between gap-3">
                 <Label htmlFor="password">Password</Label>
                 {mode === "sign-in" ? (
-                  <Link href="/forgot-password" className="text-xs font-medium text-sky-700 hover:underline">
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs font-medium text-sky-700 hover:underline">
                     Forgot password?
                   </Link>
                 ) : null}
@@ -209,32 +221,44 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
                 />
                 <button
                   type="button"
-                  aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                  aria-label={
+                    isPasswordVisible ? "Hide password" : "Show password"
+                  }
                   className="absolute right-3 top-1/2 inline-flex -translate-y-1/2 items-center justify-center text-slate-400 transition-colors hover:text-slate-700"
-                  onClick={() => setIsPasswordVisible((current) => !current)}
-                >
-                  {isPasswordVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  onClick={() => setIsPasswordVisible((current) => !current)}>
+                  {isPasswordVisible ? (
+                    <EyeOff className="size-4" />
+                  ) : (
+                    <Eye className="size-4" />
+                  )}
                 </button>
               </div>
-              <p className="text-xs text-rose-600">{"password" in form.formState.errors ? form.formState.errors.password?.message : " "}</p>
+              <p className="text-xs text-rose-600">
+                {"password" in form.formState.errors
+                  ? form.formState.errors.password?.message
+                  : " "}
+              </p>
             </div>
           ) : null}
 
           {forgotPasswordSent ? (
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-              Reset-ready state shown. Hook the email delivery flow here when backend support is added.
+              Reset-ready state shown. Hook the email delivery flow here when
+              backend support is added.
             </div>
           ) : null}
 
           {authMutation.isError && mode !== "forgot-password" ? (
-            <p className="text-sm text-rose-600">{(authMutation.error as Error).message || "Authentication failed."}</p>
+            <p className="text-sm text-rose-600">
+              {(authMutation.error as Error).message ||
+                "Authentication failed."}
+            </p>
           ) : null}
 
           <Button
             type="submit"
             className="h-11 w-full rounded-xl text-sm shadow-[0_20px_45px_-26px_rgba(14,165,233,0.82)]"
-            disabled={mode !== "forgot-password" && authMutation.isPending}
-          >
+            disabled={mode !== "forgot-password" && authMutation.isPending}>
             {mode !== "forgot-password" && authMutation.isPending ? (
               <>
                 <LoaderCircle className="size-4 animate-spin" />
@@ -250,7 +274,9 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
 
           <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
             <span>{ui.footerText}</span>
-            <Link href={ui.footerHref} className="font-medium text-sky-700 hover:underline">
+            <Link
+              href={ui.footerHref}
+              className="font-medium text-sky-700 hover:underline">
               {ui.footerLabel}
             </Link>
           </div>

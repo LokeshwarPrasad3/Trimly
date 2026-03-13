@@ -29,8 +29,8 @@ export function LinksPageClient() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-700">Links</p>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-950">Manage all short links from one simple list.</h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">Manage all short links from one simple list.</h1>
+            <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
               Search by title, slug, or destination URL. Every row is now backed by your authenticated links API.
             </p>
           </div>
