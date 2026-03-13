@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, LoaderCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, LoaderCircle, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -118,6 +118,7 @@ function getDefaultValues(mode: AuthMode): AuthFormValues {
 export function AuthFormCard({ mode }: AuthFormCardProps) {
   const router = useRouter();
   const [forgotPasswordSent, setForgotPasswordSent] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { loginMutation, signupMutation } = useAuthSession();
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(authSchema),
@@ -151,9 +152,9 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
   }
 
   return (
-    <Card className="w-full max-w-xl overflow-hidden rounded-[2rem] border border-white/60 bg-white/85 shadow-[0_28px_80px_-48px_rgba(15,23,42,0.45)] backdrop-blur-xl">
-      <div className="border-b border-sky-100 bg-[linear-gradient(135deg,_rgba(56,189,248,0.16),_rgba(255,255,255,0.95)_52%,_rgba(34,211,238,0.16))] px-6 py-5">
-        <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700 shadow-sm">
+    <Card className="w-full max-w-xl overflow-hidden rounded-[2.25rem] border border-white/70 bg-[linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(248,250,252,0.9))] shadow-[0_34px_90px_-52px_rgba(15,23,42,0.42)] backdrop-blur-2xl">
+      <div className="border-b border-white/70 bg-[linear-gradient(135deg,_rgba(14,165,233,0.15),_rgba(255,255,255,0.96)_48%,_rgba(34,211,238,0.18))] px-6 py-5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700 shadow-sm">
           <Sparkles className="size-3.5" />
           Blink auth
         </div>
@@ -167,14 +168,24 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
           {mode === "sign-up" ? (
             <div className="space-y-2">
               <Label htmlFor="name">Full name</Label>
-              <Input id="name" placeholder="Lokeshwar Rao" className="border-white/60 bg-slate-50/80" {...form.register("name")} />
+              <Input
+                id="name"
+                placeholder="Lokeshwar Rao"
+                className="h-11 rounded-xl bg-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                {...form.register("name")}
+              />
               <p className="text-xs text-rose-600">{"name" in form.formState.errors ? form.formState.errors.name?.message : " "}</p>
             </div>
           ) : null}
 
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" placeholder="you@example.com" className="border-white/60 bg-slate-50/80" {...form.register("email")} />
+            <Input
+              id="email"
+              placeholder="you@example.com"
+              className="h-11 rounded-xl bg-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+              {...form.register("email")}
+            />
             <p className="text-xs text-rose-600">{form.formState.errors.email?.message ?? " "}</p>
           </div>
 
@@ -188,7 +199,23 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
                   </Link>
                 ) : null}
               </div>
-              <Input id="password" type="password" placeholder="At least 8 characters" className="border-white/60 bg-slate-50/80" {...form.register("password")} />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  placeholder="At least 8 characters"
+                  className="h-11 rounded-xl bg-white/85 pr-11 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                  {...form.register("password")}
+                />
+                <button
+                  type="button"
+                  aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 inline-flex -translate-y-1/2 items-center justify-center text-slate-400 transition-colors hover:text-slate-700"
+                  onClick={() => setIsPasswordVisible((current) => !current)}
+                >
+                  {isPasswordVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              </div>
               <p className="text-xs text-rose-600">{"password" in form.formState.errors ? form.formState.errors.password?.message : " "}</p>
             </div>
           ) : null}
@@ -203,7 +230,11 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
             <p className="text-sm text-rose-600">{(authMutation.error as Error).message || "Authentication failed."}</p>
           ) : null}
 
-          <Button type="submit" className="h-11 w-full rounded-xl text-sm" disabled={mode !== "forgot-password" && authMutation.isPending}>
+          <Button
+            type="submit"
+            className="h-11 w-full rounded-xl text-sm shadow-[0_20px_45px_-26px_rgba(14,165,233,0.82)]"
+            disabled={mode !== "forgot-password" && authMutation.isPending}
+          >
             {mode !== "forgot-password" && authMutation.isPending ? (
               <>
                 <LoaderCircle className="size-4 animate-spin" />
@@ -216,13 +247,6 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
               </>
             )}
           </Button>
-
-          <div className="rounded-2xl bg-slate-50/80 px-4 py-4 text-sm text-slate-600">
-            <p className="font-medium text-slate-950">API integration</p>
-            <p className="mt-1 leading-6">
-              Sign up posts to `/api/users`. Sign in posts to `/api/auth/login`. Successful auth then redirects into `/dashboard`.
-            </p>
-          </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
             <span>{ui.footerText}</span>

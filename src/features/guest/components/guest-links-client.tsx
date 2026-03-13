@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, ArrowRight, CheckCircle2, CheckIcon, Copy, LoaderCircle } from "lucide-react";
+import { AlertCircle, ArrowRight, CheckCircle2, CheckIcon, Copy, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -57,10 +57,30 @@ export function GuestLinksClient() {
 
   if (isInitializing) {
     return (
-      <main className="min-h-screen bg-[linear-gradient(180deg,_#f9fbff_0%,_#eff4ff_45%,_#ffffff_100%)] px-6 py-10 sm:px-8">
-        <div className="mx-auto flex max-w-4xl items-center justify-center rounded-[2rem] border border-border/70 bg-white p-12 shadow-sm">
-          <LoaderCircle className="mr-3 size-5 animate-spin text-sky-700" />
-          <span className="text-sm font-medium text-slate-700">Creating guest workspace...</span>
+      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_30%),linear-gradient(180deg,_#f9fbff_0%,_#eff4ff_45%,_#ffffff_100%)] px-6 py-10 sm:px-8">
+        <div className="mx-auto flex min-h-[70vh] max-w-4xl items-center justify-center">
+          <div className="relative w-full max-w-xl overflow-hidden rounded-[2.25rem] border border-white/70 bg-[linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(248,250,252,0.88))] p-10 text-center shadow-[0_36px_90px_-52px_rgba(15,23,42,0.38)] backdrop-blur-2xl">
+            <div className="absolute inset-x-10 top-0 h-28 bg-[radial-gradient(circle,_rgba(14,165,233,0.18),_transparent_60%)] blur-3xl" />
+            <div className="relative mx-auto flex size-24 items-center justify-center rounded-full border border-sky-100 bg-[linear-gradient(135deg,_rgba(224,242,254,0.9),_rgba(255,255,255,0.98))] shadow-[0_24px_60px_-36px_rgba(14,165,233,0.6)]">
+              <div className="absolute inset-0 animate-spin rounded-full border-4 border-transparent border-t-sky-500 border-r-cyan-400" />
+              <div className="absolute inset-2 animate-[spin_3s_linear_infinite_reverse] rounded-full border-4 border-transparent border-b-sky-200 border-l-sky-300" />
+              <div className="rounded-full bg-white p-3 shadow-sm">
+                <Sparkles className="size-6 text-sky-700" />
+              </div>
+            </div>
+            <div className="relative mt-8 space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">Preparing guest mode</p>
+              <h1 className="bg-[linear-gradient(135deg,_#0f172a_0%,_#155e75_60%,_#0ea5e9_100%)] bg-clip-text text-3xl font-semibold tracking-tight text-transparent">
+                Creating your guest workspace
+              </h1>
+              <p className="mx-auto max-w-md text-sm leading-7 text-slate-600">
+                We are setting up a private guest token and getting your first short-link space ready.
+              </p>
+            </div>
+            <div className="relative mt-8 overflow-hidden rounded-full bg-slate-100">
+              <div className="h-2 w-full bg-[linear-gradient(90deg,_rgba(14,165,233,0.22),_rgba(14,165,233,0.9),_rgba(34,211,238,0.3))] animate-[pulse_1.6s_ease-in-out_infinite]" />
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -197,3 +217,4 @@ export function GuestLinksClient() {
     </main>
   );
 }
+

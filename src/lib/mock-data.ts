@@ -49,7 +49,7 @@ export const dashboardNav: NavItem[] = [
 export const marketingStats = [
   { label: "Free guest links", value: "10" },
   { label: "Logged-in plan", value: "Forever free" },
-  { label: "What it does", value: "Shorten URLs fast" },
+  { label: "What it does", value: " Fast shorten" },
 ];
 
 export const featureCards = [
