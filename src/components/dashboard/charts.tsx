@@ -29,7 +29,7 @@ type StatusPoint = {
   fill: string;
 };
 
-type TooltipValue = string | number | Array<string | number> | undefined;
+type TooltipValue = string | number | readonly (string | number)[] | undefined;
 type TooltipName = string | number | undefined;
 
 function formatCompactNumber(value: number) {
