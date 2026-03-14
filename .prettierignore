@@ -1,0 +1,11 @@
+.next
+node_modules
+dist
+build
+coverage
+.husky/_
+bun.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+prisma/migrations
