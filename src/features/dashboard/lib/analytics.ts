@@ -61,20 +61,34 @@ export function buildDashboardMetrics(links: ApiShortLink[]) {
 export function buildTrendData(links: ApiShortLink[]) {
   const bucket = new Map<
     string,
-    { name: string; clicks: number; links: number }
+    { date: string; name: string; clicks: number; links: number }
   >();
 
   for (const link of links) {
-    const day = new Date(link.createdAt).toLocaleDateString("en-US", {
-      weekday: "short",
-    });
-    const current = bucket.get(day) ?? { name: day, clicks: 0, links: 0 };
+    const createdAt = new Date(link.createdAt);
+    const day = createdAt.toISOString().slice(0, 10);
+    const current = bucket.get(day) ?? {
+      date: day,
+      name: createdAt.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
+      clicks: 0,
+      links: 0,
+    };
     current.clicks += link.clickCount;
     current.links += 1;
     bucket.set(day, current);
   }
 
-  return Array.from(bucket.values());
+  return Array.from(bucket.values())
+    .sort((first, second) => first.date.localeCompare(second.date))
+    .slice(-7)
+    .map((point) => ({
+      name: point.name,
+      clicks: point.clicks,
+      links: point.links,
+    }));
 }
 
 export function buildStatusData(links: ApiShortLink[]) {

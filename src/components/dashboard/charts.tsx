@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CartesianGrid,
   Cell,
   Line,
   LineChart,
@@ -27,6 +28,28 @@ type StatusPoint = {
   value: number;
   fill: string;
 };
+
+type TooltipValue = string | number | Array<string | number> | undefined;
+type TooltipName = string | number | undefined;
+
+function formatCompactNumber(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: value >= 1000 ? 1 : 0,
+  }).format(value);
+}
+
+function formatTooltipValue(value: TooltipValue) {
+  if (Array.isArray(value)) {
+    return value.join(", ");
+  }
+
+  if (typeof value === "number") {
+    return value.toLocaleString();
+  }
+
+  return value?.toString() ?? "0";
+}
 
 type PerformanceChartProps = {
   data: TrendPoint[];
@@ -69,16 +92,55 @@ export function PerformanceChart({
           <EmptyChart message="Create links to unlock traffic trend data." />
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <XAxis dataKey="name" tickLine={false} axisLine={false} />
-              <YAxis tickLine={false} axisLine={false} />
-              <Tooltip />
+            <LineChart
+              data={data}
+              margin={{ top: 12, right: 8, left: -16, bottom: 4 }}
+            >
+              <CartesianGrid
+                vertical={false}
+                stroke="rgba(148, 163, 184, 0.18)"
+              />
+              <XAxis
+                dataKey="name"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+                minTickGap={24}
+                tick={{ fill: "#64748b", fontSize: 12 }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+                width={44}
+                tick={{ fill: "#64748b", fontSize: 12 }}
+                tickFormatter={formatCompactNumber}
+              />
+              <Tooltip
+                cursor={{ stroke: "rgba(14, 165, 233, 0.16)", strokeWidth: 2 }}
+                formatter={(value: TooltipValue, name: TooltipName) => [
+                  formatTooltipValue(value),
+                  name === "clicks" ? "Clicks" : "Links created",
+                ]}
+                contentStyle={{
+                  border: "1px solid rgba(226, 232, 240, 0.9)",
+                  borderRadius: "18px",
+                  boxShadow: "0 18px 45px -30px rgba(15, 23, 42, 0.35)",
+                  backgroundColor: "rgba(255,255,255,0.96)",
+                }}
+                labelStyle={{ color: "#0f172a", fontWeight: 600 }}
+              />
               <Line
                 type="monotone"
                 dataKey="clicks"
                 stroke="var(--color-chart-1)"
                 strokeWidth={3}
                 dot={false}
+                activeDot={{
+                  r: 5,
+                  strokeWidth: 0,
+                  fill: "var(--color-chart-1)",
+                }}
               />
               <Line
                 type="monotone"
@@ -87,6 +149,11 @@ export function PerformanceChart({
                 strokeWidth={2}
                 strokeDasharray="6 6"
                 dot={false}
+                activeDot={{
+                  r: 4,
+                  strokeWidth: 0,
+                  fill: "var(--color-chart-3)",
+                }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -108,8 +175,8 @@ export function SourceChart({
       <CardHeader>
         <CardTitle className="text-lg text-slate-950">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-        <div className="h-[220px] min-w-0">
+      <CardContent className="grid gap-5 lg:grid-cols-[minmax(240px,0.95fr)_1.05fr] lg:items-center">
+        <div className="mx-auto aspect-square w-full max-w-[240px] min-w-0">
           {isLoading ? (
             <Skeleton className="h-full rounded-3xl" />
           ) : !mounted ? (
@@ -122,15 +189,33 @@ export function SourceChart({
                 <Pie
                   data={data}
                   dataKey="value"
-                  innerRadius={55}
-                  outerRadius={88}
-                  paddingAngle={5}
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="58%"
+                  outerRadius="84%"
+                  paddingAngle={2}
+                  cornerRadius={10}
+                  stroke="rgba(255,255,255,0.95)"
+                  strokeWidth={3}
                 >
                   {data.map((entry) => (
                     <Cell key={entry.name} fill={entry.fill} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip
+                  formatter={(value: TooltipValue, name: TooltipName) => [
+                    formatTooltipValue(value),
+                    name?.toString() ?? "",
+                  ]}
+                  contentStyle={{
+                    border: "1px solid rgba(226, 232, 240, 0.9)",
+                    borderRadius: "18px",
+                    boxShadow: "0 18px 45px -30px rgba(15, 23, 42, 0.35)",
+                    backgroundColor: "rgba(255,255,255,0.96)",
+                  }}
+                  labelStyle={{ color: "#0f172a", fontWeight: 600 }}
+                />
               </PieChart>
             </ResponsiveContainer>
           )}
@@ -159,7 +244,9 @@ export function SourceChart({
                     {source.name}
                   </span>
                 </div>
-                <span className="text-slate-500">{source.value}</span>
+                <span className="text-slate-500">
+                  {source.value.toLocaleString()}
+                </span>
               </div>
             ))
           )}
