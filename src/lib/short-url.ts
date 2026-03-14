@@ -9,7 +9,7 @@ export function getAppUrl() {
     return window.location.origin.replace(/\/$/, "");
   }
 
-  return "http://localhost:3000";
+  throw new Error("APP_URL or NEXT_PUBLIC_APP_URL is not configured.");
 }
 
 export function getShortLinkUrl(slug: string) {

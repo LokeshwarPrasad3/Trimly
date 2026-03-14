@@ -7,9 +7,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import "./globals.css";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.APP_URL;
-const metadataBase = new URL(
-  appUrl?.replace(/\/$/, "") || "http://localhost:3000"
-);
+const metadataBase = appUrl ? new URL(appUrl.replace(/\/$/, "")) : undefined;
 
 export const metadata: Metadata = {
   metadataBase,
