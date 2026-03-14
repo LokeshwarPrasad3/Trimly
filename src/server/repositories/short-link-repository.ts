@@ -48,13 +48,16 @@ export const shortLinkRepository = {
     return prisma.shortLink.count({ where: { guestIdentityId } });
   },
 
-  update(id: string, data: {
-    title?: string | null;
-    slug?: string;
-    originalUrl?: string;
-    status?: "ACTIVE" | "DISABLED" | "EXPIRED";
-    expiresAt?: Date | null;
-  }) {
+  update(
+    id: string,
+    data: {
+      title?: string | null;
+      slug?: string;
+      originalUrl?: string;
+      status?: "ACTIVE" | "DISABLED" | "EXPIRED";
+      expiresAt?: Date | null;
+    }
+  ) {
     return prisma.shortLink.update({ where: { id }, data });
   },
 

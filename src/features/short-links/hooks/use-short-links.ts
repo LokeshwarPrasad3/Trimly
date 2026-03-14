@@ -13,7 +13,8 @@ import {
 export const shortLinkKeys = {
   all: ["authenticated-links"] as const,
   detail: (id: string) => ["authenticated-links", id] as const,
-  clickEvents: (id: string) => ["authenticated-links", id, "click-events"] as const,
+  clickEvents: (id: string) =>
+    ["authenticated-links", id, "click-events"] as const,
 };
 
 export function useAuthenticatedLinks() {
@@ -43,7 +44,8 @@ export function useCreateAuthenticatedLink() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: CreateAuthenticatedLinkInput) => createAuthenticatedLink(input),
+    mutationFn: (input: CreateAuthenticatedLinkInput) =>
+      createAuthenticatedLink(input),
     onSuccess: async (link) => {
       await queryClient.invalidateQueries({ queryKey: shortLinkKeys.all });
       queryClient.setQueryData(shortLinkKeys.detail(link.id), link);

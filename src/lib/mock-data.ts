@@ -83,20 +83,38 @@ export const pricingTiers = [
   {
     name: "Starter",
     price: "Free",
-    description: "Use 10 links as a guest, then log in to keep creating short URLs for free.",
-    features: ["10 guest links", "Forever free after login", "Simple URL management", "Analytics after login"],
+    description:
+      "Use 10 links as a guest, then log in to keep creating short URLs for free.",
+    features: [
+      "10 guest links",
+      "Forever free after login",
+      "Simple URL management",
+      "Analytics after login",
+    ],
   },
   {
     name: "Growth",
     price: "$12/mo",
-    description: "Built for creators and small teams who need more control and cleaner reporting.",
-    features: ["Unlimited links", "Advanced filters", "Priority support", "Custom branding placeholders"],
+    description:
+      "Built for creators and small teams who need more control and cleaner reporting.",
+    features: [
+      "Unlimited links",
+      "Advanced filters",
+      "Priority support",
+      "Custom branding placeholders",
+    ],
   },
   {
     name: "Scale",
     price: "$49/mo",
-    description: "For teams that want operational visibility, governance, and heavier traffic management.",
-    features: ["Team seats", "Audit-ready dashboards", "Webhook placeholders", "Premium support"],
+    description:
+      "For teams that want operational visibility, governance, and heavier traffic management.",
+    features: [
+      "Team seats",
+      "Audit-ready dashboards",
+      "Webhook placeholders",
+      "Premium support",
+    ],
   },
 ];
 
@@ -181,19 +199,22 @@ export const shortLinks = [
 export const activityFeed = [
   {
     title: "Traffic spike detected",
-    description: "spring-launch is trending 42% above its usual hourly pattern.",
+    description:
+      "spring-launch is trending 42% above its usual hourly pattern.",
     time: "4 min ago",
     icon: BellRing,
   },
   {
     title: "Logged-in workspace active",
-    description: "Analytics and link history are now available because this account is signed in.",
+    description:
+      "Analytics and link history are now available because this account is signed in.",
     time: "18 min ago",
     icon: Sparkles,
   },
   {
     title: "Link requires review",
-    description: "qr-event-pass has a destination mismatch warning in the mock resolver flow.",
+    description:
+      "qr-event-pass has a destination mismatch warning in the mock resolver flow.",
     time: "1 hr ago",
     icon: ShieldCheck,
   },
@@ -219,7 +240,8 @@ export const settingsSections = [
   },
   {
     title: "Billing placeholders",
-    description: "Reserved for upgrade plans, invoices, and subscription actions.",
+    description:
+      "Reserved for upgrade plans, invoices, and subscription actions.",
   },
 ];
 

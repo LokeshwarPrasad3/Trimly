@@ -46,11 +46,16 @@ export async function getGuestIdentity(token: string) {
 }
 
 export async function listGuestShortLinks(token: string) {
-  const data = await unwrapResponse(http.get(`/api/links?guestToken=${encodeURIComponent(token)}`));
+  const data = await unwrapResponse(
+    http.get(`/api/links?guestToken=${encodeURIComponent(token)}`)
+  );
   return z.array(shortLinkSchema).parse(data);
 }
 
-export async function createGuestShortLink(token: string, input: CreateGuestLinkInput) {
+export async function createGuestShortLink(
+  token: string,
+  input: CreateGuestLinkInput
+) {
   const payload = createGuestLinkSchema.parse(input);
   const requestBody = createShortLinkRequestSchema.parse({
     guestToken: token,

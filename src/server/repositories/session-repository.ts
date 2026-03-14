@@ -17,6 +17,8 @@ export const sessionRepository = {
   },
 
   deleteExpiredSessions() {
-    return prisma.session.deleteMany({ where: { expiresAt: { lt: new Date() } } });
+    return prisma.session.deleteMany({
+      where: { expiresAt: { lt: new Date() } },
+    });
   },
 };

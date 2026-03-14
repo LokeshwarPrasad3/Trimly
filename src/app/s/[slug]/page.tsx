@@ -72,7 +72,11 @@ function getOs(userAgent: string | null) {
     return "Android";
   }
 
-  if (value.includes("iphone") || value.includes("ipad") || value.includes("ios")) {
+  if (
+    value.includes("iphone") ||
+    value.includes("ipad") ||
+    value.includes("ios")
+  ) {
     return "iOS";
   }
 

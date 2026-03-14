@@ -12,12 +12,20 @@ export async function createGuestIdentityController() {
 }
 
 export async function getGuestIdentityController(token: string) {
-  const guestIdentity = await guestIdentityService.getGuestIdentityByToken(z.string().min(12).parse(token));
+  const guestIdentity = await guestIdentityService.getGuestIdentityByToken(
+    z.string().min(12).parse(token)
+  );
   return apiSuccess(guestIdentity);
 }
 
-export async function claimGuestIdentityController(request: NextRequest, token: string) {
+export async function claimGuestIdentityController(
+  request: NextRequest,
+  token: string
+) {
   const payload = await parseJsonBody(request, claimGuestIdentityRequestSchema);
-  const guestIdentity = await guestIdentityService.claimGuestIdentity(token, payload);
+  const guestIdentity = await guestIdentityService.claimGuestIdentity(
+    token,
+    payload
+  );
   return apiSuccess(guestIdentity);
 }

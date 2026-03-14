@@ -10,7 +10,10 @@ import {
   listGuestShortLinks,
   type CreateGuestLinkInput,
 } from "@/lib/api/guest";
-import { getGuestToken, setGuestToken } from "@/features/guest/lib/guest-storage";
+import {
+  getGuestToken,
+  setGuestToken,
+} from "@/features/guest/lib/guest-storage";
 
 const guestKeys = {
   token: ["guest-token"] as const,
@@ -28,7 +31,10 @@ export function useGuestSession() {
     onSuccess: (guestIdentity) => {
       setGuestToken(guestIdentity.token);
       setTokenState(guestIdentity.token);
-      queryClient.setQueryData(guestKeys.identity(guestIdentity.token), guestIdentity);
+      queryClient.setQueryData(
+        guestKeys.identity(guestIdentity.token),
+        guestIdentity
+      );
     },
   });
 
@@ -79,8 +85,9 @@ export function useGuestSession() {
     identityQuery,
     linksQuery,
     createLinkMutation,
-    isInitializing: createGuestMutation.isPending || (!token && createGuestMutation.isIdle && !createGuestMutation.isError),
+    isInitializing:
+      createGuestMutation.isPending ||
+      (!token && createGuestMutation.isIdle && !createGuestMutation.isError),
     initializationError: createGuestMutation.error,
   };
 }
-

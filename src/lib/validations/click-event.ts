@@ -12,4 +12,6 @@ export const createClickEventRequestSchema = z.object({
   isBot: z.boolean().optional(),
 });
 
-export type CreateClickEventRequest = z.infer<typeof createClickEventRequestSchema>;
+export type CreateClickEventRequest = z.infer<
+  typeof createClickEventRequestSchema
+>;

@@ -45,7 +45,9 @@ export const createAuthenticatedLinkSchema = z.object({
 
 export type ApiShortLink = z.infer<typeof shortLinkApiSchema>;
 export type ApiClickEvent = z.infer<typeof clickEventApiSchema>;
-export type CreateAuthenticatedLinkInput = z.infer<typeof createAuthenticatedLinkSchema>;
+export type CreateAuthenticatedLinkInput = z.infer<
+  typeof createAuthenticatedLinkSchema
+>;
 
 export async function listAuthenticatedLinks() {
   const data = await unwrapResponse(http.get("/api/links"));
@@ -57,7 +59,9 @@ export async function getAuthenticatedLink(id: string) {
   return shortLinkApiSchema.parse(data);
 }
 
-export async function createAuthenticatedLink(input: CreateAuthenticatedLinkInput) {
+export async function createAuthenticatedLink(
+  input: CreateAuthenticatedLinkInput
+) {
   const payload = createAuthenticatedLinkSchema.parse(input);
   const data = await unwrapResponse(http.post("/api/links", payload));
   return shortLinkApiSchema.parse(data);

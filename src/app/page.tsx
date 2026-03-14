@@ -4,7 +4,11 @@ import { ArrowRight, Link2, ShieldCheck, Sparkles } from "lucide-react";
 import { MarketingFooter } from "@/components/shared/marketing-footer";
 import { MarketingHeader } from "@/components/shared/marketing-header";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { featureCards, guestFlowHighlights, marketingStats } from "@/lib/mock-data";
+import {
+  featureCards,
+  guestFlowHighlights,
+  marketingStats,
+} from "@/lib/mock-data";
 import { linkButtonClass } from "@/lib/ui";
 
 export default function HomePage() {
@@ -12,7 +16,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_24%),radial-gradient(circle_at_bottom_right,_rgba(14,165,233,0.16),_transparent_22%),linear-gradient(180deg,_#f8fbff_0%,_#eef6ff_44%,_#ffffff_100%)]">
       <MarketingHeader />
       <main>
-        <section className="mx-auto max-w-7xl px-6 pb-16 pt-14 sm:px-8 lg:pb-24 lg:pt-18">
+        <section className="mx-auto max-w-7xl px-6 pt-14 pb-16 sm:px-8 lg:pt-18 lg:pb-24">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.35)] backdrop-blur">
@@ -20,7 +24,7 @@ export default function HomePage() {
                 Simple URL shortener with a premium product surface
               </div>
               <div className="space-y-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-700">
+                <p className="text-sm font-semibold tracking-[0.24em] text-sky-700 uppercase">
                   Shorten. Share. Track.
                 </p>
                 <h1 className="max-w-3xl bg-[linear-gradient(135deg,_#0f172a_0%,_#155e75_48%,_#0ea5e9_100%)] bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-6xl lg:text-7xl">
@@ -37,8 +41,9 @@ export default function HomePage() {
                   href="/guest-links"
                   className={linkButtonClass(
                     "primary",
-                    "h-11 rounded-xl px-5 text-base shadow-[0_20px_45px_-26px_rgba(14,165,233,0.8)]",
-                  )}>
+                    "h-11 rounded-xl px-5 text-base shadow-[0_20px_45px_-26px_rgba(14,165,233,0.8)]"
+                  )}
+                >
                   Start with guest links
                   <ArrowRight className="size-4" />
                 </Link>
@@ -46,8 +51,9 @@ export default function HomePage() {
                   href="/sign-in"
                   className={linkButtonClass(
                     "secondary",
-                    "h-11 rounded-xl border border-white/70 bg-white/85 px-5 text-base text-slate-700 shadow-sm hover:bg-white",
-                  )}>
+                    "h-11 rounded-xl border border-white/70 bg-white/85 px-5 text-base text-slate-700 shadow-sm hover:bg-white"
+                  )}
+                >
                   Open dashboard
                 </Link>
               </div>
@@ -58,7 +64,7 @@ export default function HomePage() {
                 <div className="rounded-[1.75rem] bg-[linear-gradient(145deg,_rgba(14,165,233,0.12),_rgba(255,255,255,0.95)_50%,_rgba(34,211,238,0.12))] p-6">
                   <div className="flex items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">
+                      <p className="text-sm font-semibold tracking-[0.18em] text-sky-700 uppercase">
                         Guest flow
                       </p>
                       <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
@@ -66,7 +72,7 @@ export default function HomePage() {
                       </h2>
                     </div>
                     <div className="rounded-2xl bg-white px-3 py-2 text-right shadow-sm">
-                      <p className="text-xs uppercase tracking-[0.16em] text-slate-400">
+                      <p className="text-xs tracking-[0.16em] text-slate-400 uppercase">
                         Free limit
                       </p>
                       <p className="text-lg font-semibold text-slate-950">
@@ -77,7 +83,7 @@ export default function HomePage() {
                   <div className="mt-6 space-y-4 rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-sm">
                     <div>
                       <p className="text-sm text-slate-500">Destination</p>
-                      <p className="mt-2 break-all text-base font-medium text-slate-950">
+                      <p className="mt-2 text-base font-medium break-all text-slate-950">
                         https://acme.com/spring-launch-campaign
                       </p>
                     </div>
@@ -98,7 +104,8 @@ export default function HomePage() {
                     {marketingStats.map((stat) => (
                       <div
                         key={stat.label}
-                        className="rounded-[1.25rem] border border-white/75 bg-white/70 px-4 py-4 shadow-sm">
+                        className="rounded-[1.25rem] border border-white/75 bg-white/70 px-4 py-4 shadow-sm"
+                      >
                         <p className="text-xl font-semibold tracking-tight text-slate-950">
                           {stat.value}
                         </p>
@@ -125,11 +132,12 @@ export default function HomePage() {
               {guestFlowHighlights.map((item, index) => (
                 <article
                   key={item}
-                  className="rounded-[1.5rem] border border-slate-200/80 bg-[linear-gradient(180deg,_rgba(255,255,255,0.95),_rgba(248,250,252,0.95))] p-6 shadow-sm">
+                  className="rounded-[1.5rem] border border-slate-200/80 bg-[linear-gradient(180deg,_rgba(255,255,255,0.95),_rgba(248,250,252,0.95))] p-6 shadow-sm"
+                >
                   <div className="flex size-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,_#e0f2fe,_#f0f9ff)] text-sm font-semibold text-sky-700 shadow-sm">
                     0{index + 1}
                   </div>
-                  <p className="mt-5 text-base font-medium leading-7 text-slate-800">
+                  <p className="mt-5 text-base leading-7 font-medium text-slate-800">
                     {item}
                   </p>
                 </article>
@@ -154,7 +162,8 @@ export default function HomePage() {
                     index === 0
                       ? "border-sky-100 bg-[linear-gradient(180deg,_rgba(224,242,254,0.72),_rgba(255,255,255,0.96))]"
                       : "border-white/70 bg-white/78"
-                  }`}>
+                  }`}
+                >
                   <div className="flex size-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,_#e0f2fe,_#f8fafc)] text-sky-700 shadow-sm">
                     <Icon className="size-5" />
                   </div>
@@ -170,11 +179,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 pb-16 pt-6 sm:px-8 lg:pb-24">
+        <section className="mx-auto max-w-7xl px-6 pt-6 pb-16 sm:px-8 lg:pb-24">
           <div className="overflow-hidden rounded-[2.25rem] border border-sky-100 bg-[linear-gradient(135deg,_rgba(14,165,233,0.14),_rgba(255,255,255,0.96)_44%,_rgba(34,211,238,0.16))] p-8 shadow-[0_34px_80px_-46px_rgba(15,23,42,0.32)] lg:p-10">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl space-y-4">
-                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-700">
+                <p className="text-sm font-semibold tracking-[0.22em] text-sky-700 uppercase">
                   Ready to try
                 </p>
                 <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -191,8 +200,9 @@ export default function HomePage() {
                   href="/guest-links"
                   className={linkButtonClass(
                     "primary",
-                    "h-11 rounded-xl px-5 text-base shadow-[0_20px_45px_-26px_rgba(14,165,233,0.8)]",
-                  )}>
+                    "h-11 rounded-xl px-5 text-base shadow-[0_20px_45px_-26px_rgba(14,165,233,0.8)]"
+                  )}
+                >
                   Try guest links
                   <ArrowRight className="size-4" />
                 </Link>
@@ -200,8 +210,9 @@ export default function HomePage() {
                   href="/pricing"
                   className={linkButtonClass(
                     "secondary",
-                    "h-11 rounded-xl border border-white/70 bg-white/85 px-5 text-base text-slate-700 shadow-sm hover:bg-white",
-                  )}>
+                    "h-11 rounded-xl border border-white/70 bg-white/85 px-5 text-base text-slate-700 shadow-sm hover:bg-white"
+                  )}
+                >
                   View pricing
                 </Link>
               </div>

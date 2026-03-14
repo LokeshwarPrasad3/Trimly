@@ -10,7 +10,13 @@ import { z } from "zod";
 
 import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -25,7 +31,11 @@ const authSchema = z.discriminatedUnion("mode", [
   }),
   z.object({
     mode: z.literal("sign-up"),
-    name: z.string().trim().min(2, "Enter your name.").max(80, "Name is too long."),
+    name: z
+      .string()
+      .trim()
+      .min(2, "Enter your name.")
+      .max(80, "Name is too long."),
     email: emailSchema,
     password: passwordSchema,
   }),
@@ -60,7 +70,8 @@ const content: Record<
 > = {
   "sign-in": {
     title: "Welcome back",
-    description: "Sign in to open your workspace, manage links, and view live analytics.",
+    description:
+      "Sign in to open your workspace, manage links, and view live analytics.",
     action: "Sign in",
     footerHref: "/sign-up",
     footerLabel: "Create an account",
@@ -68,7 +79,8 @@ const content: Record<
   },
   "sign-up": {
     title: "Create your account",
-    description: "Sign up to claim guest links and continue using the app with a full dashboard.",
+    description:
+      "Sign up to claim guest links and continue using the app with a full dashboard.",
     action: "Create account",
     footerHref: "/sign-in",
     footerLabel: "Sign in instead",
@@ -76,7 +88,8 @@ const content: Record<
   },
   "forgot-password": {
     title: "Reset password",
-    description: "Enter your email and we will show the reset-ready state for this flow.",
+    description:
+      "Enter your email and we will show the reset-ready state for this flow.",
     action: "Send reset link",
     footerHref: "/sign-in",
     footerLabel: "Back to sign in",
@@ -84,7 +97,8 @@ const content: Record<
   },
   "guest-upgrade": {
     title: "Login to continue",
-    description: "Your guest free tier has ended. Sign in to keep all links and continue for free.",
+    description:
+      "Your guest free tier has ended. Sign in to keep all links and continue for free.",
     action: "Login to continue",
     footerHref: "/sign-up",
     footerLabel: "Create account",
@@ -154,7 +168,7 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
   return (
     <Card className="w-full max-w-xl overflow-hidden rounded-[2.25rem] border border-white/70 bg-[linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(248,250,252,0.9))] shadow-[0_34px_90px_-52px_rgba(15,23,42,0.42)] backdrop-blur-2xl">
       <div className="border-b border-white/70 bg-[linear-gradient(135deg,_rgba(14,165,233,0.15),_rgba(255,255,255,0.96)_48%,_rgba(34,211,238,0.18))] px-6 py-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700 shadow-sm">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-sky-700 uppercase shadow-sm">
           <Sparkles className="size-3.5" />
           Trimly auth
         </div>
@@ -206,7 +220,8 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
                 {mode === "sign-in" ? (
                   <Link
                     href="/forgot-password"
-                    className="text-xs font-medium text-sky-700 hover:underline">
+                    className="text-xs font-medium text-sky-700 hover:underline"
+                  >
                     Forgot password?
                   </Link>
                 ) : null}
@@ -224,8 +239,9 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
                   aria-label={
                     isPasswordVisible ? "Hide password" : "Show password"
                   }
-                  className="absolute right-3 top-1/2 inline-flex -translate-y-1/2 items-center justify-center text-slate-400 transition-colors hover:text-slate-700"
-                  onClick={() => setIsPasswordVisible((current) => !current)}>
+                  className="absolute top-1/2 right-3 inline-flex -translate-y-1/2 items-center justify-center text-slate-400 transition-colors hover:text-slate-700"
+                  onClick={() => setIsPasswordVisible((current) => !current)}
+                >
                   {isPasswordVisible ? (
                     <EyeOff className="size-4" />
                   ) : (
@@ -258,7 +274,8 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
           <Button
             type="submit"
             className="h-11 w-full rounded-xl text-sm shadow-[0_20px_45px_-26px_rgba(14,165,233,0.82)]"
-            disabled={mode !== "forgot-password" && authMutation.isPending}>
+            disabled={mode !== "forgot-password" && authMutation.isPending}
+          >
             {mode !== "forgot-password" && authMutation.isPending ? (
               <>
                 <LoaderCircle className="size-4 animate-spin" />
@@ -276,7 +293,8 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
             <span>{ui.footerText}</span>
             <Link
               href={ui.footerHref}
-              className="font-medium text-sky-700 hover:underline">
+              className="font-medium text-sky-700 hover:underline"
+            >
               {ui.footerLabel}
             </Link>
           </div>

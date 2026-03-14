@@ -3,7 +3,10 @@ import { ZodError } from "zod";
 
 import { AppError } from "@/server/errors/app-error";
 
-export function apiSuccess<T>(data: T, init?: { status?: number; meta?: Record<string, unknown> }) {
+export function apiSuccess<T>(
+  data: T,
+  init?: { status?: number; meta?: Record<string, unknown> }
+) {
   return NextResponse.json(
     {
       success: true,

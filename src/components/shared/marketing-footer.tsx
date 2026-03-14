@@ -8,7 +8,9 @@ export function MarketingFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div>
           <p className="font-medium text-slate-700">{appName}</p>
-          <p className="mt-1">Guest-first short links with a cleaner dashboard after sign in.</p>
+          <p className="mt-1">
+            Guest-first short links with a cleaner dashboard after sign in.
+          </p>
         </div>
         <div className="flex items-center gap-5">
           <Link href="/pricing" className="hover:text-slate-950">

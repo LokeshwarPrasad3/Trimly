@@ -1,6 +1,16 @@
 "use client";
 
-import { Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Cell,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -38,7 +48,11 @@ function EmptyChart({ message }: { message: string }) {
   );
 }
 
-export function PerformanceChart({ data, isLoading = false, title = "Traffic trend" }: PerformanceChartProps) {
+export function PerformanceChart({
+  data,
+  isLoading = false,
+  title = "Traffic trend",
+}: PerformanceChartProps) {
   const mounted = useMounted();
 
   return (
@@ -59,8 +73,21 @@ export function PerformanceChart({ data, isLoading = false, title = "Traffic tre
               <XAxis dataKey="name" tickLine={false} axisLine={false} />
               <YAxis tickLine={false} axisLine={false} />
               <Tooltip />
-              <Line type="monotone" dataKey="clicks" stroke="var(--color-chart-1)" strokeWidth={3} dot={false} />
-              <Line type="monotone" dataKey="links" stroke="var(--color-chart-3)" strokeWidth={2} strokeDasharray="6 6" dot={false} />
+              <Line
+                type="monotone"
+                dataKey="clicks"
+                stroke="var(--color-chart-1)"
+                strokeWidth={3}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="links"
+                stroke="var(--color-chart-3)"
+                strokeWidth={2}
+                strokeDasharray="6 6"
+                dot={false}
+              />
             </LineChart>
           </ResponsiveContainer>
         )}
@@ -69,7 +96,11 @@ export function PerformanceChart({ data, isLoading = false, title = "Traffic tre
   );
 }
 
-export function SourceChart({ data, isLoading = false, title = "Link status mix" }: SourceChartProps) {
+export function SourceChart({
+  data,
+  isLoading = false,
+  title = "Link status mix",
+}: SourceChartProps) {
   const mounted = useMounted();
 
   return (
@@ -88,7 +119,13 @@ export function SourceChart({ data, isLoading = false, title = "Link status mix"
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={data} dataKey="value" innerRadius={55} outerRadius={88} paddingAngle={5}>
+                <Pie
+                  data={data}
+                  dataKey="value"
+                  innerRadius={55}
+                  outerRadius={88}
+                  paddingAngle={5}
+                >
                   {data.map((entry) => (
                     <Cell key={entry.name} fill={entry.fill} />
                   ))}
@@ -100,17 +137,27 @@ export function SourceChart({ data, isLoading = false, title = "Link status mix"
         </div>
         <div className="space-y-3">
           {isLoading ? (
-            Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} className="h-12 rounded-2xl" />)
+            Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton key={index} className="h-12 rounded-2xl" />
+            ))
           ) : data.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/70 px-4 py-6 text-sm text-slate-500">
               Status insights appear after you create links.
             </div>
           ) : (
             data.map((source) => (
-              <div key={source.name} className="flex items-center justify-between rounded-2xl bg-slate-50/80 px-4 py-3 text-sm">
+              <div
+                key={source.name}
+                className="flex items-center justify-between rounded-2xl bg-slate-50/80 px-4 py-3 text-sm"
+              >
                 <div className="flex items-center gap-3">
-                  <span className="size-3 rounded-full" style={{ backgroundColor: source.fill }} />
-                  <span className="font-medium text-slate-950">{source.name}</span>
+                  <span
+                    className="size-3 rounded-full"
+                    style={{ backgroundColor: source.fill }}
+                  />
+                  <span className="font-medium text-slate-950">
+                    {source.name}
+                  </span>
                 </div>
                 <span className="text-slate-500">{source.value}</span>
               </div>

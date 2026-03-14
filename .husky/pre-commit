@@ -1,15 +1,15 @@
-# echo "✨ Running bun run format..."
-# bun run format
-# status=$?
+echo "✨ Running bun run format..."
+bun run format
+status=$?
 
-# if [ $status -ne 0 ]; then
-#   echo "❌ bun run format failed."
-#   exit $status
-# fi
+if [ $status -ne 0 ]; then
+  echo "❌ bun run format failed."
+  exit $status
+fi
 
-# echo "✅ Formatting complete."
+echo "✅ Formatting complete."
 
-# echo "📦 Staging formatted files..."
-# git add .
+echo "📦 Staging formatted files..."
+git add .
 
-# echo "✅ Files staged successfully."
+echo "✅ Files staged successfully."

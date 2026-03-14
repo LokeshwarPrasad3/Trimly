@@ -33,6 +33,8 @@ export async function logoutUser() {
 }
 
 export async function claimGuestLinks(guestToken: string, userId: string) {
-  const data = await unwrapResponse(http.post(`/api/guest-identities/${guestToken}/claim`, { userId }));
+  const data = await unwrapResponse(
+    http.post(`/api/guest-identities/${guestToken}/claim`, { userId })
+  );
   return data;
 }

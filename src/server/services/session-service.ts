@@ -6,9 +6,15 @@ import { AUTH_SESSION_TTL_DAYS } from "@/server/auth/constants";
 export const sessionService = {
   async createSession(userId: string) {
     const token = createSessionToken();
-    const expiresAt = new Date(Date.now() + AUTH_SESSION_TTL_DAYS * 24 * 60 * 60 * 1000);
+    const expiresAt = new Date(
+      Date.now() + AUTH_SESSION_TTL_DAYS * 24 * 60 * 60 * 1000
+    );
 
-    const session = await sessionRepository.create({ token, userId, expiresAt });
+    const session = await sessionRepository.create({
+      token,
+      userId,
+      expiresAt,
+    });
 
     return {
       token: session.token,
@@ -35,7 +41,11 @@ export const sessionService = {
     const user = await sessionService.getUserFromSessionToken(token);
 
     if (!user) {
-      throw new AppError(401, "UNAUTHORIZED", "You must be logged in to access this resource.");
+      throw new AppError(
+        401,
+        "UNAUTHORIZED",
+        "You must be logged in to access this resource."
+      );
     }
 
     return user;

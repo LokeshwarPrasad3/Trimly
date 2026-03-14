@@ -1,6 +1,9 @@
 ﻿import type { NextRequest } from "next/server";
 
-import { createShortLinkController, listShortLinksController } from "@/server/controllers/short-link-controller";
+import {
+  createShortLinkController,
+  listShortLinksController,
+} from "@/server/controllers/short-link-controller";
 import { apiError } from "@/server/http/responses";
 
 export async function GET(request: NextRequest) {

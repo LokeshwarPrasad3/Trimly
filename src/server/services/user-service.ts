@@ -35,7 +35,11 @@ export const userService = {
     const existingUser = await userRepository.findByEmail(payload.email);
 
     if (existingUser) {
-      throw new AppError(409, "EMAIL_IN_USE", "A user with this email already exists.");
+      throw new AppError(
+        409,
+        "EMAIL_IN_USE",
+        "A user with this email already exists."
+      );
     }
 
     const user = await userRepository.create({
@@ -52,7 +56,11 @@ export const userService = {
     const user = await userRepository.findByEmail(payload.email);
 
     if (!user || !verifyPassword(payload.password, user.passwordHash)) {
-      throw new AppError(401, "INVALID_CREDENTIALS", "Email or password is incorrect.");
+      throw new AppError(
+        401,
+        "INVALID_CREDENTIALS",
+        "Email or password is incorrect."
+      );
     }
 
     if (!user.isActive) {
@@ -66,7 +74,11 @@ export const userService = {
     const user = await userRepository.findById(id);
 
     if (!user) {
-      throw new AppError(404, "USER_NOT_FOUND", "The requested user was not found.");
+      throw new AppError(
+        404,
+        "USER_NOT_FOUND",
+        "The requested user was not found."
+      );
     }
 
     return toPublicUser(user);

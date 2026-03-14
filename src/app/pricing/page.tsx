@@ -9,7 +9,7 @@ import { linkButtonClass } from "@/lib/ui";
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       <MarketingHeader />
       <main className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
         <SectionHeading
@@ -19,13 +19,22 @@ export default function PricingPage() {
         />
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
           {pricingTiers.map((tier) => (
-            <article key={tier.name} className="rounded-[1.75rem] border border-border/70 bg-card p-6 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-700">{tier.name}</p>
-              <p className="mt-4 text-4xl font-semibold tracking-tight text-foreground">{tier.price}</p>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">{tier.description}</p>
+            <article
+              key={tier.name}
+              className="border-border/70 bg-card rounded-[1.75rem] border p-6 shadow-sm"
+            >
+              <p className="text-sm font-semibold tracking-[0.2em] text-sky-700 uppercase">
+                {tier.name}
+              </p>
+              <p className="text-foreground mt-4 text-4xl font-semibold tracking-tight">
+                {tier.price}
+              </p>
+              <p className="text-muted-foreground mt-3 text-sm leading-6">
+                {tier.description}
+              </p>
               <ul className="mt-6 space-y-3 text-sm">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex gap-3 text-foreground">
+                  <li key={feature} className="text-foreground flex gap-3">
                     <CheckCircle2 className="mt-0.5 size-4 text-sky-700" />
                     <span>{feature}</span>
                   </li>

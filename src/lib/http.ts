@@ -27,13 +27,16 @@ http.interceptors.response.use(
   (response) => response,
   (error) => {
     const apiError = error.response?.data as ApiErrorEnvelope | undefined;
-    const message = apiError?.error?.message ?? error.message ?? "Request failed.";
+    const message =
+      apiError?.error?.message ?? error.message ?? "Request failed.";
 
     return Promise.reject(new Error(message));
   }
 );
 
-export async function unwrapResponse<T>(request: Promise<{ data: ApiEnvelope<T> }>) {
+export async function unwrapResponse<T>(
+  request: Promise<{ data: ApiEnvelope<T> }>
+) {
   const response = await request;
   return response.data.data;
 }

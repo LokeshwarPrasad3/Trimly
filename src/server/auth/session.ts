@@ -20,7 +20,11 @@ export async function requireCurrentUserFromCookie() {
   const sessionToken = cookieStore.get(AUTH_COOKIE_NAME)?.value;
 
   if (!sessionToken) {
-    throw new AppError(401, "UNAUTHORIZED", "You must be logged in to access this resource.");
+    throw new AppError(
+      401,
+      "UNAUTHORIZED",
+      "You must be logged in to access this resource."
+    );
   }
 
   return sessionService.requireUserFromSessionToken(sessionToken);

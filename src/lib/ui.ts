@@ -9,8 +9,10 @@ export function linkButtonClass(
 
   const variants = {
     primary: "bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90",
-    secondary: "bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/80",
-    ghost: "px-4 py-2 text-foreground hover:bg-accent hover:text-accent-foreground",
+    secondary:
+      "bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/80",
+    ghost:
+      "px-4 py-2 text-foreground hover:bg-accent hover:text-accent-foreground",
   };
 
   return cn(base, variants[variant], extra);

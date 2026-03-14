@@ -7,9 +7,15 @@ import { shortLinkRepository } from "@/server/repositories/short-link-repository
 import { userRepository } from "@/server/repositories/user-repository";
 import { createGuestToken } from "@/server/utils/crypto";
 
-function serializeGuestIdentity(guestIdentity: Awaited<ReturnType<typeof guestIdentityRepository.findByToken>>) {
+function serializeGuestIdentity(
+  guestIdentity: Awaited<ReturnType<typeof guestIdentityRepository.findByToken>>
+) {
   if (!guestIdentity) {
-    throw new AppError(404, "GUEST_IDENTITY_NOT_FOUND", "The guest identity was not found.");
+    throw new AppError(
+      404,
+      "GUEST_IDENTITY_NOT_FOUND",
+      "The guest identity was not found."
+    );
   }
 
   const linksUsed = guestIdentity.shortLinks.length;
@@ -50,15 +56,27 @@ export const guestIdentityService = {
     ]);
 
     if (!guestIdentity) {
-      throw new AppError(404, "GUEST_IDENTITY_NOT_FOUND", "The guest identity was not found.");
+      throw new AppError(
+        404,
+        "GUEST_IDENTITY_NOT_FOUND",
+        "The guest identity was not found."
+      );
     }
 
     if (!user) {
-      throw new AppError(404, "USER_NOT_FOUND", "The requested user was not found.");
+      throw new AppError(
+        404,
+        "USER_NOT_FOUND",
+        "The requested user was not found."
+      );
     }
 
     if (guestIdentity.status === "CLAIMED") {
-      throw new AppError(409, "GUEST_IDENTITY_ALREADY_CLAIMED", "This guest identity is already claimed.");
+      throw new AppError(
+        409,
+        "GUEST_IDENTITY_ALREADY_CLAIMED",
+        "This guest identity is already claimed."
+      );
     }
 
     await prisma.$transaction([

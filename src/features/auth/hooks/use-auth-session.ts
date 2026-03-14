@@ -2,8 +2,18 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { claimGuestLinks, getCurrentUser, loginUser, logoutUser, signupUser, type AuthUser } from "@/lib/api/auth";
-import { clearGuestToken, getGuestToken } from "@/features/guest/lib/guest-storage";
+import {
+  claimGuestLinks,
+  getCurrentUser,
+  loginUser,
+  logoutUser,
+  signupUser,
+  type AuthUser,
+} from "@/lib/api/auth";
+import {
+  clearGuestToken,
+  getGuestToken,
+} from "@/features/guest/lib/guest-storage";
 
 const authKeys = {
   currentUser: ["auth-user"] as const,

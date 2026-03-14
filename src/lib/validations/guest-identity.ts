@@ -4,4 +4,6 @@ export const claimGuestIdentityRequestSchema = z.object({
   userId: z.string().cuid(),
 });
 
-export type ClaimGuestIdentityRequest = z.infer<typeof claimGuestIdentityRequestSchema>;
+export type ClaimGuestIdentityRequest = z.infer<
+  typeof claimGuestIdentityRequestSchema
+>;

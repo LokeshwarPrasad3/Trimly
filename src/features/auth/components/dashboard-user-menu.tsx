@@ -22,23 +22,34 @@ export function DashboardUserMenu({ user }: DashboardUserMenuProps) {
     router.refresh();
   }
 
-  const initials = user.name
-    ?.split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase() || user.email.slice(0, 2).toUpperCase();
+  const initials =
+    user.name
+      ?.split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || user.email.slice(0, 2).toUpperCase();
 
   return (
     <div className="flex items-center gap-3 rounded-[1.25rem] bg-white/80 px-3 py-2">
       <Avatar className="size-10 rounded-2xl bg-sky-100">
-        <AvatarFallback className="rounded-2xl bg-sky-100 text-sky-700">{initials}</AvatarFallback>
+        <AvatarFallback className="rounded-2xl bg-sky-100 text-sky-700">
+          {initials}
+        </AvatarFallback>
       </Avatar>
       <div className="hidden min-w-0 sm:block">
-        <p className="truncate text-sm font-semibold text-slate-950">{user.name ?? "Trimly user"}</p>
+        <p className="truncate text-sm font-semibold text-slate-950">
+          {user.name ?? "Trimly user"}
+        </p>
         <p className="truncate text-xs text-slate-500">{user.email}</p>
       </div>
-      <Button variant="ghost" className="py-4" size="sm" onClick={handleLogout} disabled={logoutMutation.isPending}>
+      <Button
+        variant="ghost"
+        className="py-4"
+        size="sm"
+        onClick={handleLogout}
+        disabled={logoutMutation.isPending}
+      >
         <LogOut className="size-4" />
         {logoutMutation.isPending ? "Signing out..." : "Logout"}
       </Button>

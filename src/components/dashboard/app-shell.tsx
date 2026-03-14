@@ -23,7 +23,9 @@ type SidebarContentProps = {
 
 function getActiveHref(pathname: string) {
   const matchedItem = dashboardNav
-    .filter((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
+    .filter(
+      (item) => pathname === item.href || pathname.startsWith(`${item.href}/`)
+    )
     .sort((first, second) => second.href.length - first.href.length)[0];
 
   return matchedItem?.href ?? "/dashboard";
@@ -36,10 +38,15 @@ function SidebarContent({ currentUser }: SidebarContentProps) {
   return (
     <div className="flex h-full flex-col rounded-[1.75rem] bg-white/70 p-1 backdrop-blur-xl">
       <div className="px-3 py-5">
-        <Link href="/dashboard" className="text-lg font-semibold tracking-tight text-slate-950">
+        <Link
+          href="/dashboard"
+          className="text-lg font-semibold tracking-tight text-slate-950"
+        >
           {appName}
         </Link>
-        <p className="mt-1 text-sm text-slate-500">Logged-in workspace with analytics access</p>
+        <p className="mt-1 text-sm text-slate-500">
+          Logged-in workspace with analytics access
+        </p>
       </div>
       <Separator />
       <nav className="flex-1 space-y-1 px-2 py-4">
@@ -65,7 +72,9 @@ function SidebarContent({ currentUser }: SidebarContentProps) {
         })}
       </nav>
       <div className="mt-auto rounded-[1.5rem] bg-gradient-to-r from-slate-950 to-sky-700 p-4 text-white">
-        <p className="text-sm font-semibold">{currentUser.name ?? "Trimly user"}</p>
+        <p className="text-sm font-semibold">
+          {currentUser.name ?? "Trimly user"}
+        </p>
         <p className="text-sm text-sky-100">Forever free workspace</p>
       </div>
     </div>
@@ -81,11 +90,15 @@ export function AppShell({ children, currentUser }: AppShellProps) {
         </aside>
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="mb-4 flex shrink-0 items-center justify-between gap-4 rounded-[1.75rem] border border-white/60 bg-white/70 px-4 py-3 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.35)] backdrop-blur-xl lg:px-6">
-            <div className="md:block hidden" >
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">Analytics workspace</p>
-              <p className="text-sm text-slate-500">Modern logged-in area with charts, links, and profile screens</p>
+            <div className="hidden md:block">
+              <p className="text-xs font-semibold tracking-[0.18em] text-sky-700 uppercase">
+                Analytics workspace
+              </p>
+              <p className="text-sm text-slate-500">
+                Modern logged-in area with charts, links, and profile screens
+              </p>
             </div>
-            <div className="flex items-center md:justify-normal justify-between w-full md:w-auto gap-3">
+            <div className="flex w-full items-center justify-between gap-3 md:w-auto md:justify-normal">
               <div className="lg:hidden">
                 <Sheet>
                   <SheetTrigger render={<Button variant="outline" size="sm" />}>
@@ -100,7 +113,9 @@ export function AppShell({ children, currentUser }: AppShellProps) {
               <DashboardUserMenu user={currentUser} />
             </div>
           </div>
-          <main className="min-w-0 flex-1 overflow-y-auto pr-1">{children}</main>
+          <main className="min-w-0 flex-1 overflow-y-auto pr-1">
+            {children}
+          </main>
         </div>
       </div>
     </div>

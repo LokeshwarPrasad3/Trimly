@@ -6,7 +6,10 @@ export const createShortLinkSchema = z.object({
     .trim()
     .min(3, "Slug must be at least 3 characters.")
     .max(32, "Slug must be at most 32 characters.")
-    .regex(/^[a-zA-Z0-9-_]+$/, "Slug can only contain letters, numbers, hyphens, and underscores."),
+    .regex(
+      /^[a-zA-Z0-9-_]+$/,
+      "Slug can only contain letters, numbers, hyphens, and underscores."
+    ),
   originalUrl: z.url("Enter a valid destination URL."),
 });
 
@@ -73,6 +76,10 @@ export const listShortLinksQuerySchema = z
   });
 
 export type CreateShortLinkInput = z.infer<typeof createShortLinkSchema>;
-export type CreateShortLinkRequest = z.infer<typeof createShortLinkRequestSchema>;
-export type UpdateShortLinkRequest = z.infer<typeof updateShortLinkRequestSchema>;
+export type CreateShortLinkRequest = z.infer<
+  typeof createShortLinkRequestSchema
+>;
+export type UpdateShortLinkRequest = z.infer<
+  typeof updateShortLinkRequestSchema
+>;
 export type ListShortLinksQuery = z.infer<typeof listShortLinksQuerySchema>;

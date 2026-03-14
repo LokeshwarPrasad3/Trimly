@@ -1,7 +1,10 @@
 ﻿import type { NextRequest } from "next/server";
 import { z } from "zod";
 
-import { createUserRequestSchema, loginUserRequestSchema } from "@/lib/validations/user";
+import {
+  createUserRequestSchema,
+  loginUserRequestSchema,
+} from "@/lib/validations/user";
 import { parseJsonBody } from "@/server/http/requests";
 import { apiSuccess } from "@/server/http/responses";
 import { userService } from "@/server/services/user-service";

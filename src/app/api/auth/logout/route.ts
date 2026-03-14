@@ -14,7 +14,10 @@ export async function POST() {
       await sessionService.deleteSession(sessionToken);
     }
 
-    const response = NextResponse.json({ success: true, data: { loggedOut: true } });
+    const response = NextResponse.json({
+      success: true,
+      data: { loggedOut: true },
+    });
     response.cookies.set(AUTH_COOKIE_NAME, "", {
       httpOnly: true,
       sameSite: "lax",

@@ -4,7 +4,11 @@ import { AppShell } from "@/components/dashboard/app-shell";
 import { getCurrentUserFromCookie } from "@/server/auth/session";
 import { userService } from "@/server/services/user-service";
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const user = await getCurrentUserFromCookie();
 
   if (!user) {

@@ -1,4 +1,7 @@
-﻿import { createClickEventRequestSchema, type CreateClickEventRequest } from "@/lib/validations/click-event";
+﻿import {
+  createClickEventRequestSchema,
+  type CreateClickEventRequest,
+} from "@/lib/validations/click-event";
 import { AppError } from "@/server/errors/app-error";
 import { clickEventRepository } from "@/server/repositories/click-event-repository";
 import { shortLinkRepository } from "@/server/repositories/short-link-repository";
@@ -8,11 +11,19 @@ export const clickEventService = {
     const shortLink = await shortLinkRepository.findById(shortLinkId);
 
     if (!shortLink) {
-      throw new AppError(404, "SHORT_LINK_NOT_FOUND", "The short link was not found.");
+      throw new AppError(
+        404,
+        "SHORT_LINK_NOT_FOUND",
+        "The short link was not found."
+      );
     }
 
     if (shortLink.userId !== userId) {
-      throw new AppError(403, "FORBIDDEN", "You do not have access to this short link.");
+      throw new AppError(
+        403,
+        "FORBIDDEN",
+        "You do not have access to this short link."
+      );
     }
 
     return clickEventRepository.listByShortLinkId(shortLinkId);
@@ -22,7 +33,11 @@ export const clickEventService = {
     const shortLink = await shortLinkRepository.findById(shortLinkId);
 
     if (!shortLink) {
-      throw new AppError(404, "SHORT_LINK_NOT_FOUND", "The short link was not found.");
+      throw new AppError(
+        404,
+        "SHORT_LINK_NOT_FOUND",
+        "The short link was not found."
+      );
     }
 
     const payload = createClickEventRequestSchema.parse(input);

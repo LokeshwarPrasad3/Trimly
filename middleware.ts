@@ -10,7 +10,9 @@ export function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get(AUTH_COOKIE_NAME)?.value;
   const { pathname } = request.nextUrl;
 
-  const isProtectedRoute = protectedPrefixes.some((prefix) => pathname.startsWith(prefix));
+  const isProtectedRoute = protectedPrefixes.some((prefix) =>
+    pathname.startsWith(prefix)
+  );
   const isAuthPage = authPages.some((route) => pathname.startsWith(route));
 
   if (isProtectedRoute && !sessionToken) {
