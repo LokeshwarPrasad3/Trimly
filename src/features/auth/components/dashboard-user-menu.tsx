@@ -35,7 +35,7 @@ export function DashboardUserMenu({ user }: DashboardUserMenuProps) {
         <AvatarFallback className="rounded-2xl bg-sky-100 text-sky-700">{initials}</AvatarFallback>
       </Avatar>
       <div className="hidden min-w-0 sm:block">
-        <p className="truncate text-sm font-semibold text-slate-950">{user.name ?? "Blink user"}</p>
+        <p className="truncate text-sm font-semibold text-slate-950">{user.name ?? "Trimly user"}</p>
         <p className="truncate text-xs text-slate-500">{user.email}</p>
       </div>
       <Button variant="ghost" className="py-4" size="sm" onClick={handleLogout} disabled={logoutMutation.isPending}>

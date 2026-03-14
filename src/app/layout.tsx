@@ -5,7 +5,7 @@ import { Overpass } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Blink | URL Shortener UI",
+  title: "Trimly | URL Shortener UI",
   description: "UI-first v1 workspace for a modern URL shortener product.",
 };
 

@@ -11,7 +11,7 @@ export default function GuestUpgradePage() {
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-700">Free tier expired</p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">Your 10 free guest links are finished.</h1>
           <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-            To access all links and continue using Blink, the user now needs to log in. For now, the logged-in experience stays free.
+            To access all links and continue using Trimly, the user now needs to log in. For now, the logged-in experience stays free.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/sign-in" className={linkButtonClass("primary")}>

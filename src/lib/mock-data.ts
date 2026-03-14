@@ -15,7 +15,7 @@ import {
   Zap,
 } from "lucide-react";
 
-export const appName = "Blink";
+export const appName = "Trimly";
 
 export type NavItem = {
   href: string;

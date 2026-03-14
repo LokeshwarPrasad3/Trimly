@@ -64,7 +64,7 @@ const content: Record<
     action: "Sign in",
     footerHref: "/sign-up",
     footerLabel: "Create an account",
-    footerText: "New to Blink?",
+    footerText: "New to Trimly?",
   },
   "sign-up": {
     title: "Create your account",
@@ -156,7 +156,7 @@ export function AuthFormCard({ mode }: AuthFormCardProps) {
       <div className="border-b border-white/70 bg-[linear-gradient(135deg,_rgba(14,165,233,0.15),_rgba(255,255,255,0.96)_48%,_rgba(34,211,238,0.18))] px-6 py-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/85 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700 shadow-sm">
           <Sparkles className="size-3.5" />
-          Blink auth
+          Trimly auth
         </div>
       </div>
       <CardHeader className="space-y-3 px-6 pt-6">

@@ -13,7 +13,7 @@ export default function SignInPage() {
         <section className="order-2 space-y-6 lg:order-1">
           <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/75 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm backdrop-blur">
             <Sparkles className="size-4 text-sky-700" />
-            Blink
+            Trimly
           </Link>
           <div className="space-y-4">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-700">Sign in</p>

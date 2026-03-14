@@ -65,7 +65,7 @@ function SidebarContent({ currentUser }: SidebarContentProps) {
         })}
       </nav>
       <div className="mt-auto rounded-[1.5rem] bg-gradient-to-r from-slate-950 to-sky-700 p-4 text-white">
-        <p className="text-sm font-semibold">{currentUser.name ?? "Blink user"}</p>
+        <p className="text-sm font-semibold">{currentUser.name ?? "Trimly user"}</p>
         <p className="text-sm text-sky-100">Forever free workspace</p>
       </div>
     </div>
