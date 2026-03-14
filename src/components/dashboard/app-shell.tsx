@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -40,9 +41,17 @@ function SidebarContent({ currentUser }: SidebarContentProps) {
       <div className="px-3 py-5">
         <Link
           href="/dashboard"
-          className="text-lg font-semibold tracking-tight text-slate-950"
+          className="inline-flex items-center gap-1 text-lg font-semibold tracking-tight text-slate-950"
         >
-          {appName}
+          <Image
+            src="/trimly.svg"
+            alt="Trimly logo"
+            width={36}
+            height={36}
+            className="size-9"
+            priority
+          />
+          <span className="relative top-0.5">{appName}</span>
         </Link>
         <p className="mt-1 text-sm text-slate-500">
           Logged-in workspace with analytics access
