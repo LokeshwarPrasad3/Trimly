@@ -38,7 +38,7 @@ export function MarketingHeader() {
             href="/sign-in"
             className={linkButtonClass(
               "ghost",
-              "hidden rounded-xl px-4 py-2 text-slate-600 hover:bg-white/70 hover:text-slate-950 sm:inline-flex"
+              "inline-flex rounded-xl px-4 py-2 text-slate-600 hover:bg-white/70 hover:text-slate-950"
             )}
           >
             Sign in

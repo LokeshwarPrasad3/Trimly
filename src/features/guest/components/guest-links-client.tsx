@@ -149,7 +149,7 @@ export function GuestLinksClient() {
             Guest users can create up to 10 short links for free. After the 10th
             link, we ask them to log in to continue using the product.
           </p>
-          <div className="mt-3 text-xs tracking-[0.18em] text-slate-400 uppercase">
+          <div className="mt-3 text-xs tracking-[0.18em] break-all text-slate-400 uppercase">
             Guest token: {token}
           </div>
           <form

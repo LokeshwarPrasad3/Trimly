@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Overpass } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -88,6 +89,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={overpass.className}>
       <body>
+        <NextTopLoader
+          color="linear-gradient(to right, #7c3aed, #3b82f6)"
+          height={3}
+          speed={200}
+          easing="ease"
+          shadow="0 0 10px #7c3aed, 0 0 5px #3b82f6"
+          showSpinner={false}
+        />
         <QueryProvider>
           <TooltipProvider>
             {children}

@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, Link2, ShieldCheck, Sparkles } from "lucide-react";
 
@@ -11,7 +12,30 @@ import {
 } from "@/lib/mock-data";
 import { linkButtonClass } from "@/lib/ui";
 
+import { useState, useRef } from "react";
+import { toast } from "sonner";
+
 export default function HomePage() {
+  const linkRef = useRef<HTMLParagraphElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    const link = linkRef.current?.textContent?.trim();
+    if (link) {
+      navigator.clipboard.writeText(link).then(() => {
+        setCopied(true);
+        toast.success("Link copied to clipboard!");
+        setTimeout(() => setCopied(false), 2000);
+        // Optionally select the text for visual feedback
+        const range = document.createRange();
+        range.selectNodeContents(linkRef.current!);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_24%),radial-gradient(circle_at_bottom_right,_rgba(14,165,233,0.16),_transparent_22%),linear-gradient(180deg,_#f8fbff_0%,_#eef6ff_44%,_#ffffff_100%)]">
       <MarketingHeader />
@@ -58,20 +82,20 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="relative">
+            <div className="live_look_right_section relative">
               <div className="absolute inset-0 rounded-[2.25rem] bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.2),_transparent_52%)] blur-3xl" />
               <div className="relative overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/80 p-6 shadow-[0_34px_80px_-46px_rgba(15,23,42,0.35)] backdrop-blur-xl">
-                <div className="rounded-[1.75rem] bg-[linear-gradient(145deg,_rgba(14,165,233,0.12),_rgba(255,255,255,0.95)_50%,_rgba(34,211,238,0.12))] p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
+                <div className="rounded-[1.75rem] bg-[linear-gradient(145deg,_rgba(14,165,233,0.12),_rgba(255,255,255,0.95)_50%,_rgba(34,211,238,0.12))] p-4 sm:p-6">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold tracking-[0.18em] text-sky-700 uppercase">
                         Guest flow
                       </p>
-                      <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
+                      <h2 className="mt-2 text-lg font-semibold tracking-tight text-slate-950 sm:text-xl">
                         Create your short URL in seconds
                       </h2>
                     </div>
-                    <div className="rounded-2xl bg-white px-3 py-2 text-right shadow-sm">
+                    <div className="shrink-0 rounded-2xl bg-white px-3 py-2 text-left shadow-sm sm:text-right">
                       <p className="text-xs tracking-[0.16em] text-slate-400 uppercase">
                         Free limit
                       </p>
@@ -80,24 +104,30 @@ export default function HomePage() {
                       </p>
                     </div>
                   </div>
-                  <div className="mt-6 space-y-4 rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-sm">
-                    <div>
+                  <div className="mt-6 space-y-4 rounded-[1.5rem] border border-white/70 bg-white/75 p-4 shadow-sm sm:p-5">
+                    <div className="min-w-0">
                       <p className="text-sm text-slate-500">Destination</p>
-                      <p className="mt-2 text-base font-medium break-all text-slate-950">
-                        https://acme.com/spring-launch-campaign
+                      <p className="mt-2 text-sm font-medium break-all text-slate-950/80">
+                        https://www.linkedin.com/posts/lokeshwar-dewangan-7b2163211_officially-graduated-btech-in-computer-activity-7351670982908047361-XqXH
                       </p>
                     </div>
                     <div className="h-px bg-slate-200" />
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="min-w-0">
                         <p className="text-sm text-slate-500">Short URL</p>
-                        <p className="mt-2 text-base font-semibold text-slate-950">
-                          your-app.com/s/launch
+                        <p
+                          ref={linkRef}
+                          className="mt-2 text-sm font-semibold break-all text-slate-950/80"
+                        >
+                          https://trimly.lokeshwardewangan.in/ql9hPdy
                         </p>
                       </div>
-                      <div className="rounded-xl bg-sky-600 px-3 py-2 text-sm font-medium text-white shadow-[0_16px_30px_-18px_rgba(14,165,233,0.85)]">
-                        Copy link
-                      </div>
+                      <button
+                        onClick={handleCopy}
+                        className={`shrink-0 cursor-pointer rounded-xl px-3 py-2 text-sm font-medium shadow-[0_16px_30px_-18px_rgba(14,165,233,0.85)] hover:opacity-90 hover:shadow-sm ${copied ? "bg-emerald-500 text-white" : "bg-sky-600 text-white"}`}
+                      >
+                        {copied ? "Copied!" : "Copy link"}
+                      </button>
                     </div>
                   </div>
                   <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -106,7 +136,7 @@ export default function HomePage() {
                         key={stat.label}
                         className="rounded-[1.25rem] border border-white/75 bg-white/70 px-4 py-4 shadow-sm"
                       >
-                        <p className="text-xl font-semibold tracking-tight text-slate-950">
+                        <p className="text-base font-semibold tracking-tight text-slate-950">
                           {stat.value}
                         </p>
                         <p className="mt-1 text-sm text-slate-500">

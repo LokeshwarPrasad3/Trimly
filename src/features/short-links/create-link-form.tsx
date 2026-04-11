@@ -23,6 +23,19 @@ import {
 } from "@/lib/api/links";
 import { getShortLinkUrl } from "@/lib/short-url";
 
+function extractTitleFromUrl(url: string): string {
+  try {
+    const { hostname, pathname } = new URL(url);
+    const slug = pathname.split("/").filter(Boolean).pop();
+    const base = slug
+      ? slug.replace(/[-_]/g, " ").replace(/\.[^.]+$/, "")
+      : hostname.replace(/^www\./, "");
+    return base.charAt(0).toUpperCase() + base.slice(1);
+  } catch {
+    return "";
+  }
+}
+
 export function CreateLinkForm() {
   const router = useRouter();
   const [submissionError, setSubmissionError] = useState<string | null>(null);
@@ -30,9 +43,8 @@ export function CreateLinkForm() {
   const form = useForm<CreateAuthenticatedLinkInput>({
     resolver: zodResolver(createAuthenticatedLinkSchema),
     defaultValues: {
-      title: "Spring launch",
       slug: "",
-      originalUrl: "https://acme.com/launch",
+      originalUrl: "https://budgetter.lokeshwardewangan.in",
     },
   });
   const slug = useWatch({ control: form.control, name: "slug" });
@@ -41,14 +53,14 @@ export function CreateLinkForm() {
     setSubmissionError(null);
 
     try {
+      const title = extractTitleFromUrl(values.originalUrl);
       const normalizedValues = {
         ...values,
-        title: values.title?.trim() ? values.title.trim() : undefined,
+        title: title || undefined,
         slug: values.slug?.trim() ? values.slug.trim() : undefined,
       };
       const link = await createLinkMutation.mutateAsync(normalizedValues);
       form.reset({
-        title: link.title ?? "",
         slug: link.slug,
         originalUrl: link.originalUrl,
       });
@@ -67,43 +79,35 @@ export function CreateLinkForm() {
           Create short link
         </CardTitle>
         <CardDescription>
-          Use a memorable slug and a clean destination. This form now posts to
-          the live authenticated API.
+          Paste a destination URL and optionally set a custom alias. The title
+          is picked up automatically.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-5 lg:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="title">Link title</Label>
-              <Input
-                id="title"
-                placeholder="Campaign landing page"
-                {...form.register("title")}
-              />
-              <p className="text-xs text-rose-600">
-                {form.formState.errors.title?.message ?? " "}
-              </p>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="slug">
-                Custom alias <span className="text-slate-400">(optional)</span>
-              </Label>
-              <Input
-                id="slug"
-                placeholder="Leave empty for auto-generated short slug"
-                {...form.register("slug")}
-              />
-              <p className="text-xs text-rose-600">
-                {form.formState.errors.slug?.message ?? " "}
-              </p>
-            </div>
-          </div>
           <div className="space-y-2">
             <Label htmlFor="originalUrl">Destination URL</Label>
-            <Input id="originalUrl" {...form.register("originalUrl")} />
+            <Input
+              id="originalUrl"
+              placeholder="https://example.com/your-long-url"
+              {...form.register("originalUrl")}
+            />
             <p className="text-xs text-rose-600">
               {form.formState.errors.originalUrl?.message ?? " "}
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="slug">
+              Custom alias{" "}
+              <span className="font-normal text-slate-400">(optional)</span>
+            </Label>
+            <Input
+              id="slug"
+              placeholder="e.g. my-brand — leave empty for auto-generated"
+              {...form.register("slug")}
+            />
+            <p className="text-xs text-rose-600">
+              {form.formState.errors.slug?.message ?? " "}
             </p>
           </div>
           <div className="rounded-2xl bg-[linear-gradient(135deg,_rgba(14,165,233,0.1),_rgba(255,255,255,0.92),_rgba(6,182,212,0.1))] p-4">
@@ -135,7 +139,7 @@ export function CreateLinkForm() {
             {createLinkMutation.isPending ? (
               <LoaderCircle className="size-4 animate-spin" />
             ) : null}
-            {createLinkMutation.isPending ? "Creating link" : "Create link"}
+            {createLinkMutation.isPending ? "Creating link…" : "Create link"}
           </Button>
         </form>
       </CardContent>

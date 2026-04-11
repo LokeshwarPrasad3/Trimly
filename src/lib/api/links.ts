@@ -37,11 +37,20 @@ export const createAuthenticatedLinkSchema = z.object({
   slug: z
     .string()
     .trim()
-    .min(3)
-    .max(32)
-    .regex(/^[a-zA-Z0-9-_]+$/)
+    .transform((v) => (v === "" ? undefined : v))
+    .pipe(
+      z
+        .string()
+        .min(3, "Alias must be at least 3 characters.")
+        .max(32, "Alias must be at most 32 characters.")
+        .regex(
+          /^[a-zA-Z0-9-_]+$/,
+          "Only letters, numbers, hyphens, and underscores allowed."
+        )
+        .optional()
+    )
     .optional(),
-  originalUrl: z.url(),
+  originalUrl: z.url("Enter a valid destination URL."),
 });
 
 export type ApiShortLink = z.infer<typeof shortLinkApiSchema>;
