@@ -39,7 +39,8 @@ export const createAuthenticatedLinkSchema = z.object({
     .trim()
     .min(3)
     .max(32)
-    .regex(/^[a-zA-Z0-9-_]+$/),
+    .regex(/^[a-zA-Z0-9-_]+$/)
+    .optional(),
   originalUrl: z.url(),
 });
 

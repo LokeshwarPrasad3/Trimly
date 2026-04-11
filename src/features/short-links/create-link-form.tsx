@@ -31,7 +31,7 @@ export function CreateLinkForm() {
     resolver: zodResolver(createAuthenticatedLinkSchema),
     defaultValues: {
       title: "Spring launch",
-      slug: "spring-launch",
+      slug: "",
       originalUrl: "https://acme.com/launch",
     },
   });
@@ -44,6 +44,7 @@ export function CreateLinkForm() {
       const normalizedValues = {
         ...values,
         title: values.title?.trim() ? values.title.trim() : undefined,
+        slug: values.slug?.trim() ? values.slug.trim() : undefined,
       };
       const link = await createLinkMutation.mutateAsync(normalizedValues);
       form.reset({
@@ -85,8 +86,14 @@ export function CreateLinkForm() {
               </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="slug">Custom alias</Label>
-              <Input id="slug" {...form.register("slug")} />
+              <Label htmlFor="slug">
+                Custom alias <span className="text-slate-400">(optional)</span>
+              </Label>
+              <Input
+                id="slug"
+                placeholder="Leave empty for auto-generated short slug"
+                {...form.register("slug")}
+              />
               <p className="text-xs text-rose-600">
                 {form.formState.errors.slug?.message ?? " "}
               </p>
@@ -109,7 +116,9 @@ export function CreateLinkForm() {
                 <p className="mt-1 text-sm text-slate-600">
                   Your short URL will look like{" "}
                   <span className="font-medium text-slate-950">
-                    {getShortLinkUrl(slug || "your-slug")}
+                    {slug?.trim()
+                      ? getShortLinkUrl(slug.trim())
+                      : "(auto-generated)"}
                   </span>
                 </p>
               </div>

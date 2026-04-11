@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Overpass } from "next/font/google";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/providers/query-provider";
 
 import "./globals.css";
@@ -88,7 +89,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={overpass.className}>
       <body>
         <QueryProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            {children}
+            <Toaster position="bottom-right" richColors />
+          </TooltipProvider>
         </QueryProvider>
       </body>
     </html>

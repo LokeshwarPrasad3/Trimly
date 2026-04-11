@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -24,7 +25,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useGuestSession } from "@/features/guest/hooks/use-guest-session";
-import { createSlugFromUrl } from "@/features/guest/lib/slug";
 import { getShortLinkUrl } from "@/lib/short-url";
 import { linkButtonClass } from "@/lib/ui";
 
@@ -55,12 +55,22 @@ export function GuestLinksClient() {
   const guestLinks = linksQuery.data ?? [];
 
   const onSubmit = form.handleSubmit(async (values) => {
-    await createLinkMutation.mutateAsync({
-      originalUrl: values.originalUrl,
-      slug: createSlugFromUrl(values.originalUrl),
-    });
-
-    form.reset();
+    try {
+      const link = await createLinkMutation.mutateAsync({
+        originalUrl: values.originalUrl,
+      });
+      const shortUrl = getShortLinkUrl(link.slug);
+      toast.success("Short link created!", {
+        description: shortUrl,
+        action: {
+          label: "Copy",
+          onClick: () => navigator.clipboard.writeText(shortUrl),
+        },
+      });
+      form.reset();
+    } catch {
+      // Error is handled by the mutation's onError callback
+    }
   });
 
   async function handleCopy(linkId: string, slug: string) {
@@ -153,7 +163,7 @@ export function GuestLinksClient() {
               <Input
                 id="originalUrl"
                 placeholder="https://example.com/very-long-product-campaign-url"
-                className="border-0 bg-transparent px-0 text-base font-medium text-slate-950 shadow-none focus-visible:ring-0"
+                className="border-0 bg-transparent px-0 text-base font-medium text-slate-950 shadow-none placeholder:font-normal placeholder:opacity-60 focus-visible:ring-0"
                 {...form.register("originalUrl")}
                 disabled={
                   guestIdentity?.freeTierExpired || createLinkMutation.isPending

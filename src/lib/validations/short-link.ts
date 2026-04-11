@@ -1,22 +1,24 @@
 ﻿import { z } from "zod";
 
+export const slugSchema = z
+  .string()
+  .trim()
+  .min(3, "Slug must be at least 3 characters.")
+  .max(32, "Slug must be at most 32 characters.")
+  .regex(
+    /^[a-zA-Z0-9-_]+$/,
+    "Slug can only contain letters, numbers, hyphens, and underscores."
+  );
+
 export const createShortLinkSchema = z.object({
-  slug: z
-    .string()
-    .trim()
-    .min(3, "Slug must be at least 3 characters.")
-    .max(32, "Slug must be at most 32 characters.")
-    .regex(
-      /^[a-zA-Z0-9-_]+$/,
-      "Slug can only contain letters, numbers, hyphens, and underscores."
-    ),
+  slug: slugSchema.optional(),
   originalUrl: z.url("Enter a valid destination URL."),
 });
 
 export const createShortLinkRequestSchema = z
   .object({
     title: z.string().trim().min(1).max(120).optional(),
-    slug: createShortLinkSchema.shape.slug,
+    slug: slugSchema.optional(),
     originalUrl: createShortLinkSchema.shape.originalUrl,
     userId: z.string().cuid().optional(),
     guestToken: z.string().min(12).optional(),

@@ -27,7 +27,7 @@ const shortLinkSchema = z.object({
 
 const createGuestLinkSchema = z.object({
   originalUrl: z.url("Enter a valid URL."),
-  slug: z.string().trim().min(3).max(32),
+  slug: z.string().trim().min(3).max(32).optional(),
   title: z.string().trim().min(1).max(120).optional(),
 });
 

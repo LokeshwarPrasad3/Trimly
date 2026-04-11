@@ -22,9 +22,19 @@ const guestKeys = {
 };
 
 export function useGuestSession() {
-  const [token, setTokenState] = useState<string | null>(() => getGuestToken());
+  const [token, setTokenState] = useState<string | null>(null);
+  const [hasHydrated, setHasHydrated] = useState(false);
   const hasAttemptedCreationRef = useRef(false);
   const queryClient = useQueryClient();
+
+  // Read token from localStorage after mount to avoid hydration mismatch
+  useEffect(() => {
+    const storedToken = getGuestToken();
+    if (storedToken) {
+      setTokenState(storedToken);
+    }
+    setHasHydrated(true);
+  }, []);
 
   const createGuestMutation = useMutation({
     mutationFn: createGuestIdentity,
@@ -39,6 +49,9 @@ export function useGuestSession() {
   });
 
   useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
     if (token || hasAttemptedCreationRef.current) {
       return;
     }
@@ -46,7 +59,7 @@ export function useGuestSession() {
     hasAttemptedCreationRef.current = true;
     createGuestMutation.mutate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]); // intentionally omit createGuestMutation — it's a new ref each render
+  }, [hasHydrated, token]); // intentionally omit createGuestMutation — it's a new ref each render
 
   const identityQuery = useQuery({
     queryKey: token ? guestKeys.identity(token) : guestKeys.token,
@@ -86,6 +99,7 @@ export function useGuestSession() {
     linksQuery,
     createLinkMutation,
     isInitializing:
+      !hasHydrated ||
       createGuestMutation.isPending ||
       (!token && createGuestMutation.isIdle && !createGuestMutation.isError),
     initializationError: createGuestMutation.error,

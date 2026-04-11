@@ -11,7 +11,7 @@ import { AppError } from "@/server/errors/app-error";
 import { guestIdentityRepository } from "@/server/repositories/guest-identity-repository";
 import { shortLinkRepository } from "@/server/repositories/short-link-repository";
 import { userRepository } from "@/server/repositories/user-repository";
-import { normalizeSlug } from "@/server/utils/slug";
+import { generateSlug, normalizeSlug } from "@/server/utils/slug";
 
 export const shortLinkService = {
   async listShortLinks(query: ListShortLinksQuery) {
@@ -59,15 +59,34 @@ export const shortLinkService = {
 
   async createShortLink(input: CreateShortLinkRequest) {
     const payload = createShortLinkRequestSchema.parse(input);
-    const slug = normalizeSlug(payload.slug);
-    const existingLink = await shortLinkRepository.findBySlug(slug);
 
-    if (existingLink) {
-      throw new AppError(
-        409,
-        "SLUG_ALREADY_IN_USE",
-        "That short link slug is already in use."
-      );
+    let slug: string;
+    if (payload.slug) {
+      slug = normalizeSlug(payload.slug);
+      const existingLink = await shortLinkRepository.findBySlug(slug);
+      if (existingLink) {
+        throw new AppError(
+          409,
+          "SLUG_ALREADY_IN_USE",
+          "That short link slug is already in use."
+        );
+      }
+    } else {
+      // Auto-generate a unique 7-char base62 slug with collision retry
+      let candidate: string;
+      let attempts = 0;
+      do {
+        candidate = generateSlug();
+        attempts++;
+        if (attempts > 10) {
+          throw new AppError(
+            500,
+            "SLUG_GENERATION_FAILED",
+            "Unable to generate a unique slug. Please try again."
+          );
+        }
+      } while (await shortLinkRepository.findBySlug(candidate));
+      slug = candidate;
     }
 
     if (payload.userId) {

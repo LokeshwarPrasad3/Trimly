@@ -13,5 +13,5 @@ export function getAppUrl() {
 }
 
 export function getShortLinkUrl(slug: string) {
-  return `${getAppUrl()}/s/${slug}`;
+  return `${getAppUrl()}/${slug}`;
 }
