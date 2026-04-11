@@ -12,7 +12,10 @@
     "format:check": "prettier --check .",
     "lint": "eslint",
     "prepare": "husky",
-    "start": "next start"
+    "start": "next start",
+    "sst:dev": "sst dev",
+    "deploy": "sst deploy --stage prod",
+    "destroy": "sst remove --stage prod"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,css,md,json,yml,yaml}": "prettier --write"
